@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">SoilSmartApp</string>
+    <string name="title_activity_node_locations">Locations</string>
+</resources>
