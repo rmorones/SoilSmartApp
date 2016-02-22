@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">SoilSmartApp</string>
     <string name="title_activity_node_locations">Locations</string>
+    <string name="google_maps_key">AIzaSyD_kQpy75hRLZLDl7Td_gfKIXkhKfjbhSo</string>
 </resources>
