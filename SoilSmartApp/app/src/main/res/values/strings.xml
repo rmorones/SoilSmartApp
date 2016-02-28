@@ -1,6 +1,36 @@
 <resources>
     <string name="app_name">SoilSmartApp</string>
+    <string name="company_name">SoilSmart</string>
+
+    <!-- Strings related to login -->
+    <string name="logo_description">SoilSmart</string>
+    <string name="login">Sign In</string>
+    <string name="create_account_msg">Don\'t have an account?\nRegister here.</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password must be at least 7 characters long and contain at least one of each of the following:\n* a–z\n* A–Z\n* 0–9</string>
+    <string name="error_incorrect_password">Invalid credentials</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."</string>
+
+    <!-- Strings related to register -->
+    <string name="register">Register</string>
+    <string name="back_to_login">Back to Login</string>
+    <string name="prompt_product_key">Product Key (Included in purchase)</string>
+
+    <!-- Strings related to Locations  -->
     <string name="title_activity_node_locations">Locations</string>
     <string name="google_maps_key">AIzaSyD_kQpy75hRLZLDl7Td_gfKIXkhKfjbhSo</string>
     <string name="google_app_id">752907188352</string>
+
+    <!-- Miscellaneous -->
+    <string name="password_regex">^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{7,}$</string>
+    <string name="email_regex">^\\w+([-+.\']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$</string>
+    <string name="register_success">Registration Successful!</string>
+    <string name="registration_failed">Registration failed.\nDid you use the right product key?\nAlready have an account? Just login and add your product key through our \'Settings\' tab.</string>
+
 </resources>
