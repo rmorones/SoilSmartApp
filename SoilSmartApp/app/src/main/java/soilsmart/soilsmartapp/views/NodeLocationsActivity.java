@@ -1,8 +1,8 @@
 package soilsmart.soilsmartapp.views;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -17,7 +17,7 @@ import soilsmart.soilsmartapp.UserLocalStore;
 /**
  *
  */
-public class NodeLocationsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class NodeLocationsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private UserLocalStore userLocalStore;

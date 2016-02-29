@@ -63,7 +63,8 @@
         <activity
             android:name=".views.NodeLocationsActivity"
             android:configChanges="screenSize|orientation"
-            android:label="@string/title_activity_node_locations">
+            android:label="@string/title_activity_node_locations"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -74,7 +75,8 @@
             android:name=".views.LoginActivity"
             android:configChanges="screenSize"
             android:label="@string/company_name"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -85,7 +87,8 @@
             android:name=".views.RegisterActivity"
             android:label="@string/company_name"
             android:configChanges="screenSize"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
