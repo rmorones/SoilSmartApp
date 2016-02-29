@@ -1,5 +1,6 @@
 package soilsmart.soilsmartapp.views;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -11,6 +12,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import soilsmart.soilsmartapp.R;
+import soilsmart.soilsmartapp.UserLocalStore;
 
 /**
  *
@@ -18,6 +20,7 @@ import soilsmart.soilsmartapp.R;
 public class NodeLocationsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private UserLocalStore userLocalStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +30,7 @@ public class NodeLocationsActivity extends FragmentActivity implements OnMapRead
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        userLocalStore = new UserLocalStore(this);
     }
 
 
@@ -47,5 +51,14 @@ public class NodeLocationsActivity extends FragmentActivity implements OnMapRead
         final LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!userLocalStore.getUserLoggedIn()) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        }
     }
 }

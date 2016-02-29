@@ -29,6 +29,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,6 +121,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onStart() {
         super.onStart();
         if (userLocalStore.getUserLoggedIn()) {
+            final User user = userLocalStore.getLoggedInUser();
+            Toast.makeText(this,
+                    "Logged in as: " + user.getEmail(),
+                    Toast.LENGTH_LONG).show();
             launchActivity(NodeLocationsActivity.class);
             finish();
         }
@@ -189,19 +194,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
-        if (!isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
-        if (TextUtils.isEmpty(password)) {
-            mPasswordView.setError(getString(R.string.error_field_required));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
             mEmailView.setError(getString(R.string.error_field_required));
@@ -211,6 +203,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
+        }
+
+        // Check for a valid password, if the user entered one.
+        if (TextUtils.isEmpty(password)) {
+            mPasswordView.setError(getString(R.string.error_field_required));
+            focusView = mPasswordView;
+            cancel = true;
+        }
+
+        if (!isPasswordValid(password) && !cancel) {
+            showProgress(true);
+            mPasswordView.setError(getString(R.string.error_incorrect_password));
+            mEmailView.setError(getString(R.string.error_incorrect_password));
+            mEmailView.requestFocus();
+            showProgress(false);
+            return;
         }
 
         if (cancel) {
