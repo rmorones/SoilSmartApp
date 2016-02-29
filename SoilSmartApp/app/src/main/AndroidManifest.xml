@@ -60,7 +60,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".NodeLocationsActivity"
+            android:name=".views.NodeLocationsActivity"
             android:configChanges="screenSize|orientation"
             android:label="@string/title_activity_node_locations">
             <intent-filter>
@@ -69,7 +69,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".views.LoginActivity"
             android:configChanges="screenSize"
             android:label="@string/company_name"
             android:screenOrientation="portrait">
@@ -80,7 +80,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RegisterActivity"
+            android:name=".views.RegisterActivity"
             android:label="@string/company_name"
             android:screenOrientation="portrait">
             <intent-filter>

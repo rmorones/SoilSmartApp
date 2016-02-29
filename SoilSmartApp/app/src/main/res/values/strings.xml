@@ -14,8 +14,7 @@
     <string name="error_invalid_password">This password must be at least 7 characters long and contain at least one of each of the following:\n* a–z\n* A–Z\n* 0–9</string>
     <string name="error_incorrect_password">Invalid credentials</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
 
     <!-- Strings related to register -->
     <string name="register">Register</string>

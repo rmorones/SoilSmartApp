@@ -1,4 +1,4 @@
-package soilsmart.soilsmartapp;
+package soilsmart.soilsmartapp.views;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -29,10 +29,14 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import soilsmart.soilsmartapp.R;
+import soilsmart.soilsmartapp.SoilSmartService;
+import soilsmart.soilsmartapp.User;
+import soilsmart.soilsmartapp.UserLocalStore;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -110,6 +114,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
         userLocalStore = new UserLocalStore(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (userLocalStore.getUserLoggedIn()) {
+            launchActivity(NodeLocationsActivity.class);
+            finish();
+        }
     }
 
     private void populateAutoComplete() {

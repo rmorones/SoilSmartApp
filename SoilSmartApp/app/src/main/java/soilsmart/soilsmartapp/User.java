@@ -12,13 +12,13 @@ public class User implements Serializable {
     private String passwordHash;
     private List<SoilSmartNode> nodes;
 
-    User(String email, String passwordHash) {
+    public User(String email, String passwordHash) {
         this.email = email;
         this.passwordHash = passwordHash;
         this.nodes = null;
     }
 
-    User(String email, String passwordHash, List<SoilSmartNode> nodes) {
+    public User(String email, String passwordHash, List<SoilSmartNode> nodes) {
         this.email = email;
         this.passwordHash = passwordHash;
         this.nodes = nodes;

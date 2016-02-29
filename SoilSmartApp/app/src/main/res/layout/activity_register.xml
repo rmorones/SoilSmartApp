@@ -11,7 +11,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:fitsSystemWindows="true"
     android:background="#cdc5bf"
-    tools:context="soilsmart.soilsmartapp.RegisterActivity">
+    tools:context=".views.RegisterActivity">
 
     <!-- Login progress -->
     <ProgressBar

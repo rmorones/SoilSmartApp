@@ -1,4 +1,4 @@
-package soilsmart.soilsmartapp;
+package soilsmart.soilsmartapp.views;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -12,12 +12,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import soilsmart.soilsmartapp.R;
+import soilsmart.soilsmartapp.SoilSmartService;
+import soilsmart.soilsmartapp.User;
+import soilsmart.soilsmartapp.views.LoginActivity;
 
 public class RegisterActivity extends AppCompatActivity {
 
