@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/locations_activity"
+        android:title="Locations" />
+    <item android:id="@+id/node_info_activity"
+        android:title="Node Info" />
+    <item android:id="@+id/all_nodes_activity"
+        android:title="All Nodes" />
+    <item android:id="@+id/leakage_activity"
+        android:title="Leakage Controls" />
+    <item android:id="@+id/ar_activity"
+        android:title="Virtual Reality Mode" />
+    <item android:id="@+id/settings_activity"
+        android:title="Settings" />
+</menu>

@@ -2,7 +2,11 @@ package soilsmart.soilsmartapp.views;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -26,6 +30,13 @@ public class NodeLocationsActivity extends AppCompatActivity implements OnMapRea
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_node_locations);
+        final ActionBar bar = getSupportActionBar();
+        if (bar != null) {
+            bar.setDisplayShowHomeEnabled(true);
+            bar.setIcon(R.mipmap.soilsmart_icon);
+            bar.show();
+        }
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -60,5 +71,43 @@ public class NodeLocationsActivity extends AppCompatActivity implements OnMapRea
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        // Handle presses on the action bar items
+        // View v = findViewById(R.id.f);
+        switch (item.getItemId()) {
+            case R.id.locations_activity:
+                //action
+                launchActivity(NodeLocationsActivity.class);
+                return true;
+            case R.id.node_info_activity:
+                //action
+                return true;
+            case R.id.all_nodes_activity:
+                //action
+                return true;
+            case R.id.leakage_activity:
+                //action
+                return true;
+            case R.id.settings_activity:
+                //action
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void launchActivity(Class clazz) {
+        startActivity(new Intent(this, clazz));
+        finish();
     }
 }
