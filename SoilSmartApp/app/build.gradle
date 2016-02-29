@@ -1,8 +1,16 @@
 apply plugin: 'com.android.application'
 
+def NATIVE_LIB_DIR = 'lib'
+def JAR_DIR = 'libs/vuforia'
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
+
+    sourceSets.main {
+        jni.srcDirs = []
+        jniLibs.srcDir "$NATIVE_LIB_DIR/"
+    }
 
     defaultConfig {
         applicationId "soilsmart.soilsmartapp"
@@ -14,7 +22,17 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            ndk {
+                abiFilters "armeabi-v7a"
+            }
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+            debuggable true
+            ndk {
+                abiFilters "armeabi-v7a"
+            }
         }
     }
     packagingOptions {
@@ -30,6 +48,7 @@ dependencies {
     compile 'com.google.android.gms:play-services:8.4.0'
     compile 'com.android.support:design:23.1.1'
     compile 'com.google.code.gson:gson:2.6.2'
+    compile files("$JAR_DIR/Vuforia.jar")
 }
 
 repositories {
