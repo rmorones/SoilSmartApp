@@ -31,5 +31,6 @@
     <string name="email_regex">^\\w+([-+.\']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$</string>
     <string name="register_success">Registration Successful!</string>
     <string name="registration_failed">Registration failed.\nDid you use the right product key?\nAlready have an account? Just login and add your product key through our \'Settings\' tab.</string>
+    <string name="title_activity_node_detail">NodeDetailActivity</string>
 
 </resources>
