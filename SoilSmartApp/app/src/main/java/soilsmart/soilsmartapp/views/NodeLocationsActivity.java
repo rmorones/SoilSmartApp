@@ -148,7 +148,13 @@ public class NodeLocationsActivity extends BaseMenuActivity implements OnMapRead
             nodes.add(node);
         }
         return nodes;
-    };
+    }
 
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!userLocalStore.getUserLoggedIn()) {
+            launchActivity(LoginActivity.class);
+        }
+    }
 }
