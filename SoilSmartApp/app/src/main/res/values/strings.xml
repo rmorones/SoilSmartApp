@@ -33,4 +33,9 @@
     <string name="registration_failed">Registration failed.\nDid you use the right product key?\nAlready have an account? Just login and add your product key through our \'Settings\' tab.</string>
     <string name="title_activity_node_detail">NodeDetailActivity</string>
 
+    <!-- Strings related to AR -->
+    <string name="title_activity_ar">ARActivity</string>
+    <string name="wikitude_key">0Znl+rCLZF3NDzHkr/Rtn0LmUF6r9Rpn3dfLCnYnGGSYYGVnmuKtQd7MBBtsV3yxN1fgeN7vQZCmK3f/bIymsS31SwWWN2kIVEDdrAgkjYeqyuR0+qnKMpVh6sZZQKGjCOfKj4Y0VkchiMYIJPzon+watuj1qLKoUshGU1aPHclTYWx0ZWRfXxf2BSJ3ljL9+Xqnb8uQ9j5TiFmjjtEA0YCUiN7RZXByhLDAIYpQnTmzfDdHpcCnIxA4f/ZWF19kwUkyxHhQUDbHnv+0dtV7yXuGiIYV4hGXUgQz0ySFSG+vu/DbAslCuCVPkppcV00FVEeiMoitcgkoNWpzLKGvludCXJphJWV5r1RrKThqOt6KUDL+9gF2exhpob1QSRawTZAQP2pdM3a+bgUGEgFsHjD38punQgB5yTpuk7+/nikVDWnBSHwF/LM9epChWYaAZdpe30Csi2qOJXUQMDoliNdpKJyKiKcUMAR9aw1p76VgkP/Q8dYe/D9NWclOnYPUzo7AhTz//b4BDrKoYnVACuQHh54GaYF1PgDMp7dgGwBbwz4ccz/qqfGS8UY/EPdn3037ALiMPVmuote4Xxh0KT1y/pvWSb30FffkXZpKl58tcv7OmSysyV26mSMj8Cwpes1QFsXx+EsspLYNBVTfMVBgXT+evIoBr/llheoHtoY=</string>
+    <string name="location_fetching">Trying to find out where you are</string>
+
 </resources>
