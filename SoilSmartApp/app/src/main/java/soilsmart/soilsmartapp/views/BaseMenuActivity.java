@@ -28,6 +28,7 @@ public class BaseMenuActivity extends AppCompatActivity {
                 return true;
             case R.id.node_info_activity:
                 //action
+                launchActivity(NodeDetailActivity.class);
                 return true;
             case R.id.all_nodes_activity:
                 //action
@@ -37,6 +38,10 @@ public class BaseMenuActivity extends AppCompatActivity {
                 return true;
             case R.id.settings_activity:
                 //action
+                return true;
+            case R.id.ar_activity:
+                //action
+                launchActivity(ARActivity.class);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
