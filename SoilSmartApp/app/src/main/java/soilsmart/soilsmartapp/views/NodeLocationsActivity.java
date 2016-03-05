@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Parcelable;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -53,15 +54,6 @@ public class NodeLocationsActivity extends BaseMenuActivity implements OnMapRead
         userLocalStore = new UserLocalStore(this);
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -80,7 +72,10 @@ public class NodeLocationsActivity extends BaseMenuActivity implements OnMapRead
             nodes.put(id, node);
         }
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(),100));
+        int width = getResources().getDisplayMetrics().widthPixels;
+        int height = getResources().getDisplayMetrics().heightPixels;
+        int padding = (int) (width * 0.12);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), width, height, padding));
 
         // Setup ClickListener to start new activity for individual sensor module data page
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
@@ -115,12 +110,12 @@ public class NodeLocationsActivity extends BaseMenuActivity implements OnMapRead
                 TextView tvLvl3 = (TextView) v.findViewById(R.id.tv_lvl3);
 
                 tvID.setText("ID: " + node.getId());
-                tvLat.setText("Latitude: " + String.format("%.6f",node.getLat()));
-                tvLon.setText("Longitude: " + String.format("%.6f",node.getLon()));
+                tvLat.setText("Latitude: " + String.format("%.6f", node.getLat()));
+                tvLon.setText("Longitude: " + String.format("%.6f", node.getLon()));
 
-                tvLvl1.setText("Lvl1 Avg: " + String.format("%.2f",node.getValuesLvl1Avg()*100)+"%");
-                tvLvl2.setText("Lvl2 Avg: " + String.format("%.2f",node.getValuesLvl2Avg()*100)+"%");
-                tvLvl3.setText("Lvl3 Avg: " + String.format("%.2f",node.getValuesLvl3Avg()*100)+"%");
+                tvLvl1.setText("Lvl1 Avg: " + String.format("%.2f", node.getValuesLvl1Avg() * 100) + "%");
+                tvLvl2.setText("Lvl2 Avg: " + String.format("%.2f", node.getValuesLvl2Avg() * 100) + "%");
+                tvLvl3.setText("Lvl3 Avg: " + String.format("%.2f", node.getValuesLvl3Avg() * 100) + "%");
                 return v;
             }
         });
