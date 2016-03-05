@@ -1,6 +1,7 @@
 package soilsmart.soilsmartapp.views;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -31,7 +33,7 @@ public class NodeLocationsActivity extends BaseMenuActivity implements OnMapRead
 
     private GoogleMap mMap;
     private UserLocalStore userLocalStore;
-    private Map<String,SoilSmartNode> nodes;
+    public Map<String,SoilSmartNode> nodes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +87,9 @@ public class NodeLocationsActivity extends BaseMenuActivity implements OnMapRead
             @Override
             public void onInfoWindowClick(Marker marker) {
                 Intent newIntent = new Intent(getApplicationContext(), NodeDetailActivity.class);
+                //need to send over the node that we are going to display information for
+                SoilSmartNode node = nodes.get(marker.getId());
+                newIntent.putExtra("node", node);
                 startActivity(newIntent);
             }
         });

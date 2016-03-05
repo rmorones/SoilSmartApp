@@ -26,12 +26,14 @@ public class BaseMenuActivity extends AppCompatActivity {
                 //action
                 launchActivity(NodeLocationsActivity.class);
                 return true;
-            case R.id.node_info_activity:
+            //user should only be able to get to NodeDetailActivity by selecting a node on the map
+            /*case R.id.node_info_activity:
                 //action
                 launchActivity(NodeDetailActivity.class);
-                return true;
+                return true;*/
             case R.id.all_nodes_activity:
                 //action
+                launchActivity(AllNodesActivity.class);
                 return true;
             case R.id.leakage_activity:
                 //action

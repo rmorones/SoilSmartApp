@@ -32,6 +32,10 @@
     <string name="register_success">Registration Successful!</string>
     <string name="registration_failed">Registration failed.\nDid you use the right product key?\nAlready have an account? Just login and add your product key through our \'Settings\' tab.</string>
     <string name="title_activity_node_detail">NodeDetailActivity</string>
+    <string name="butt_label_day">Day</string>
+    <string name="butt_label_week">Week</string>
+    <string name="butt_label_month">Month</string>
+
 
     <!-- Strings related to AR -->
     <string name="title_activity_ar">ARActivity</string>
