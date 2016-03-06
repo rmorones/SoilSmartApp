@@ -94,7 +94,8 @@
         </activity>
         <activity
             android:name=".views.NodeDetailActivity"
-            android:label="NodeDetail">
+            android:label="NodeDetail"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -103,7 +104,18 @@
         </activity>
         <activity
             android:name=".views.AllNodesActivity"
-            android:label="AllNodes">
+            android:label="AllNodes"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".views.SettingsActivity"
+            android:label="Settings"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

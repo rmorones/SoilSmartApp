@@ -5,6 +5,7 @@ package soilsmart.soilsmartapp.views;
  */
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
@@ -69,7 +70,7 @@ public class NodeDetailActivity extends BaseMenuActivity {
             bar.setIcon(R.mipmap.soilsmart_icon);
             bar.show();
         }
-
+        //button code that allows user to select what type of data to show
         Button buttonClick = (Button)findViewById(R.id.button);
         buttonClick.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +112,9 @@ public class NodeDetailActivity extends BaseMenuActivity {
         });
 
         userLocalStore = new UserLocalStore(this);
+        Snackbar.make(findViewById(R.id.container), R.string.snackbarMsg,
+                Snackbar.LENGTH_LONG)
+                .show();
     }
 
     @Override
