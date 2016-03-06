@@ -4,19 +4,19 @@ package soilsmart.soilsmartapp.views;
  * Created by jesus on 3/4/16.
  */
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import lecho.lib.hellocharts.model.ValueShape;
 import soilsmart.soilsmartapp.R;
 import soilsmart.soilsmartapp.UserLocalStore;
 import soilsmart.soilsmartapp.SoilSmartNode;
@@ -36,33 +36,43 @@ import lecho.lib.hellocharts.util.ChartUtils;
 import lecho.lib.hellocharts.view.ColumnChartView;
 import lecho.lib.hellocharts.view.LineChartView;
 
+
 public class AllNodesActivity extends BaseMenuActivity {
     private UserLocalStore userLocalStore;
+    private List<SoilSmartNode> tempNodes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.all_nodes);
+
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().add(R.id.container, new PlaceholderFragment()).commit();
+            //populate nodes list with "random" data
+            tempNodes = NodeLocationsActivity.GetRandomNodes();
+            PlaceholderFragment frag = new PlaceholderFragment();
+            Bundle args = new Bundle();
+            args.putSerializable("nodes", (Serializable) tempNodes);
+            frag.setArguments(args);
+            getSupportFragmentManager().beginTransaction().add(R.id.container, frag).commit();
         }
+
         final ActionBar bar = getSupportActionBar();
         if (bar != null) {
             bar.setDisplayShowHomeEnabled(true);
             bar.setIcon(R.mipmap.soilsmart_icon);
             bar.show();
         }
+
         userLocalStore = new UserLocalStore(this);
+        Snackbar.make(findViewById(R.id.container), R.string.snackbarMsg,
+                Snackbar.LENGTH_LONG)
+                .show();
     }
 
     /**
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
-        public final static String[] months = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
-                "Sep", "Oct", "Nov", "Dec",};
-
-        public final static String[] days = new String[]{"Mon", "Tue", "Wen", "Thu", "Fri", "Sat", "Sun",};
 
         private LineChartView chartTop;
         private ColumnChartView chartBottom;
@@ -70,12 +80,28 @@ public class AllNodesActivity extends BaseMenuActivity {
         private LineChartData lineData;
         private ColumnChartData columnData;
 
+        private List<SoilSmartNode> tempnodes;
+
+        private boolean hasAxes = true;
+        private boolean hasAxesNames = true;
+        private boolean hasLines = true;
+        private boolean hasPoints = true;
+        private ValueShape shape = ValueShape.CIRCLE;
+        private boolean isFilled = false;
+        private boolean hasLabels = false;
+        private boolean isCubic = true;
+        private boolean hasLabelForSelected = false;
+        private boolean pointsHaveDifferentColor = false;
+
         public PlaceholderFragment() {
         }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_line_column_dependency, container, false);
+            //node sent from NodeDetailActivity
+            Bundle bundle = getArguments();
+            tempnodes = (List<SoilSmartNode>) bundle.get("nodes");
 
             // *** TOP LINE CHART ***
             chartTop = (LineChartView) rootView.findViewById(R.id.chart_top);
@@ -95,7 +121,7 @@ public class AllNodesActivity extends BaseMenuActivity {
         private void generateColumnData() {
 
             int numSubcolumns = 1;
-            int numColumns = months.length;
+            int numColumns = tempnodes.size();
 
             List<AxisValue> axisValues = new ArrayList<AxisValue>();
             List<Column> columns = new ArrayList<Column>();
@@ -104,18 +130,23 @@ public class AllNodesActivity extends BaseMenuActivity {
 
                 values = new ArrayList<SubcolumnValue>();
                 for (int j = 0; j < numSubcolumns; ++j) {
-                    values.add(new SubcolumnValue((float) Math.random() * 50f + 5, ChartUtils.pickColor()));
+                    values.add(new SubcolumnValue((float) tempnodes.get(i).getValuesLvl1Avg(), ChartUtils.COLORS[(j + 0) % ChartUtils.COLORS.length]));
+                    values.add(new SubcolumnValue((float) tempnodes.get(i).getValuesLvl2Avg(), ChartUtils.COLORS[(j + 1) % ChartUtils.COLORS.length]));
+                    values.add(new SubcolumnValue((float) tempnodes.get(i).getValuesLvl3Avg(), ChartUtils.COLORS[(j + 2) % ChartUtils.COLORS.length]));
                 }
 
-                axisValues.add(new AxisValue(i).setLabel(months[i]));
+                axisValues.add(new AxisValue(i).setLabel(tempnodes.get(i).getId()));
 
                 columns.add(new Column(values).setHasLabelsOnlyForSelected(true));
             }
 
             columnData = new ColumnChartData(columns);
 
-            columnData.setAxisXBottom(new Axis(axisValues).setHasLines(true));
-            columnData.setAxisYLeft(new Axis().setHasLines(true).setMaxLabelChars(2));
+            //stack the bars
+            columnData.setStacked(true);
+
+            columnData.setAxisXBottom(new Axis(axisValues).setHasLines(true).setName("Node ID"));
+            columnData.setAxisYLeft(new Axis().setHasLines(true).setMaxLabelChars(3));
 
             chartBottom.setColumnChartData(columnData);
 
@@ -146,13 +177,13 @@ public class AllNodesActivity extends BaseMenuActivity {
          * will select value on column chart.
          */
         private void generateInitialLineData() {
-            int numValues = 7;
+            int numValues = tempnodes.get(0).getValuesLvl1().length;
 
             List<AxisValue> axisValues = new ArrayList<AxisValue>();
             List<PointValue> values = new ArrayList<PointValue>();
             for (int i = 0; i < numValues; ++i) {
                 values.add(new PointValue(i, 0));
-                axisValues.add(new AxisValue(i).setLabel(days[i]));
+                axisValues.add(new AxisValue(i).setLabel("day"));
             }
 
             Line line = new Line(values);
@@ -160,10 +191,17 @@ public class AllNodesActivity extends BaseMenuActivity {
 
             List<Line> lines = new ArrayList<Line>();
             lines.add(line);
+            line.setShape(shape);
+            line.setCubic(isCubic);
+            line.setFilled(isFilled);
+            line.setHasLabels(hasLabels);
+            line.setHasLabelsOnlyForSelected(hasLabelForSelected);
+            line.setHasLines(hasLines);
+            line.setHasPoints(hasPoints);
 
             lineData = new LineChartData(lines);
-            lineData.setAxisXBottom(new Axis(axisValues).setHasLines(true));
-            lineData.setAxisYLeft(new Axis().setHasLines(true).setMaxLabelChars(3));
+            lineData.setAxisXBottom(new Axis(axisValues).setHasLines(true).setName("Previous Days"));
+            lineData.setAxisYLeft(new Axis().setHasLines(true).setMaxLabelChars(3).setName("Moisture"));
 
             chartTop.setLineChartData(lineData);
 
@@ -178,17 +216,87 @@ public class AllNodesActivity extends BaseMenuActivity {
             chartTop.setZoomType(ZoomType.HORIZONTAL);
         }
 
-        private void generateLineData(int color, float range) {
+        private void generateLineData(int color, float range, int nodeIndex) {
             // Cancel last animation if not finished.
             chartTop.cancelDataAnimation();
 
-            // Modify data targets
-            Line line = lineData.getLines().get(0);// For this example there is always only one line.
-            line.setColor(color);
-            for (PointValue value : line.getValues()) {
-                // Change target only for Y value.
-                value.setTarget(value.getX(), (float) Math.random() * range);
+            double[] points1 = tempnodes.get(nodeIndex).getValuesLvl1();
+            double[] points2 = tempnodes.get(nodeIndex).getValuesLvl2();
+            double[] points3 = tempnodes.get(nodeIndex).getValuesLvl3();
+
+            List<Line> lines = new ArrayList<Line>();
+
+            List<PointValue> values = new ArrayList<PointValue>();
+            for (int j = 0; j < points1.length; ++j) {
+                values.add(new PointValue(j, (float) points1[j]));
             }
+
+            Line line = new Line(values);
+            line.setColor(ChartUtils.COLORS[0]);
+            line.setShape(shape);
+            line.setCubic(isCubic);
+            line.setFilled(isFilled);
+            line.setHasLabels(hasLabels);
+            line.setHasLabelsOnlyForSelected(hasLabelForSelected);
+            line.setHasLines(hasLines);
+            line.setHasPoints(hasPoints);
+            if (pointsHaveDifferentColor){
+                line.setPointColor(ChartUtils.COLORS[(0 + 1) % ChartUtils.COLORS.length]);
+            }
+            lines.add(0,line);
+
+            List<PointValue> values2 = new ArrayList<PointValue>();
+            for (int j = 0; j < points2.length; ++j) {
+                values2.add(new PointValue(j, (float) points2[j]));
+            }
+            Line line2 = new Line(values2);
+            line2.setColor(ChartUtils.COLORS[1]);
+            line2.setShape(shape);
+            line2.setCubic(isCubic);
+            line2.setFilled(isFilled);
+            line2.setHasLabels(hasLabels);
+            line2.setHasLabelsOnlyForSelected(hasLabelForSelected);
+            line2.setHasLines(hasLines);
+            line2.setHasPoints(hasPoints);
+            if (pointsHaveDifferentColor){
+                line2.setPointColor(ChartUtils.COLORS[(1 + 1) % ChartUtils.COLORS.length]);
+            }
+            lines.add(1,line2);
+
+            List<PointValue> values3 = new ArrayList<PointValue>();
+            for (int j = 0; j < points3.length; ++j) {
+                values3.add(new PointValue(j, (float) points3[j]));
+            }
+            Line line3 = new Line(values3);
+            line3.setColor(ChartUtils.COLORS[2]);
+            line3.setShape(shape);
+            line3.setCubic(isCubic);
+            line3.setFilled(isFilled);
+            line3.setHasLabels(hasLabels);
+            line3.setHasLabelsOnlyForSelected(hasLabelForSelected);
+            line3.setHasLines(hasLines);
+            line3.setHasPoints(hasPoints);
+            if (pointsHaveDifferentColor){
+                line3.setPointColor(ChartUtils.COLORS[(2 + 1) % ChartUtils.COLORS.length]);
+            }
+            lines.add(2, line3);
+
+            lineData = new LineChartData(lines);
+
+            if (hasAxes) {
+                Axis axisX = new Axis().setHasLines(true);
+                Axis axisY = new Axis().setHasLines(true);
+                if (hasAxesNames) {
+                    axisX.setName("Previous Days");
+                    axisY.setName("Moisture");
+                }
+                lineData.setAxisXBottom(axisX);
+                lineData.setAxisYLeft(axisY);
+            } else {
+                lineData.setAxisXBottom(null);
+                lineData.setAxisYLeft(null);
+            }
+            chartTop.setLineChartData(lineData);
 
             // Start new data animation with 300ms duration;
             chartTop.startDataAnimation(300);
@@ -198,13 +306,13 @@ public class AllNodesActivity extends BaseMenuActivity {
 
             @Override
             public void onValueSelected(int columnIndex, int subcolumnIndex, SubcolumnValue value) {
-                generateLineData(value.getColor(), 1);
+                generateLineData(value.getColor(), 1, columnIndex);
             }
 
             @Override
             public void onValueDeselected() {
 
-                generateLineData(ChartUtils.COLOR_GREEN, 0);
+                generateLineData(ChartUtils.COLOR_GREEN, 0, 0);
 
             }
         }

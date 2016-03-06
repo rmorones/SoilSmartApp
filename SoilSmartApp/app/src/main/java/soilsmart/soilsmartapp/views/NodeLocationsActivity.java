@@ -126,7 +126,7 @@ public class NodeLocationsActivity extends BaseMenuActivity implements OnMapRead
         });
     }
 
-    public List<SoilSmartNode> GetRandomNodes() {
+    public static List<SoilSmartNode> GetRandomNodes() {
         // Lat/lon max/min for the Work family's grove
         double latMax = 33.349969;
         double latMin = 33.349292;

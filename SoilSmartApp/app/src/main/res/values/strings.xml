@@ -35,6 +35,7 @@
     <string name="butt_label_day">Day</string>
     <string name="butt_label_week">Week</string>
     <string name="butt_label_month">Month</string>
+    <string name="snackbarMsg">Blue: Level 1 Moisture\tPurple: Level 2 Moisture\nGreen: Level 3 Moisture</string>
 
 
     <!-- Strings related to AR -->
