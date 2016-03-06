@@ -1,6 +1,8 @@
 package soilsmart.soilsmartapp.views;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -9,6 +11,17 @@ import android.view.MenuItem;
 import soilsmart.soilsmartapp.R;
 
 public class BaseMenuActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        final ActionBar bar = getSupportActionBar();
+        if (bar != null) {
+            bar.setDisplayShowHomeEnabled(true);
+            bar.setIcon(R.mipmap.soilsmart_icon);
+            bar.show();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
@@ -26,11 +39,6 @@ public class BaseMenuActivity extends AppCompatActivity {
                 //action
                 launchActivity(NodeLocationsActivity.class);
                 return true;
-            //user should only be able to get to NodeDetailActivity by selecting a node on the map
-            /*case R.id.node_info_activity:
-                //action
-                launchActivity(NodeDetailActivity.class);
-                return true;*/
             case R.id.all_nodes_activity:
                 //action
                 launchActivity(AllNodesActivity.class);

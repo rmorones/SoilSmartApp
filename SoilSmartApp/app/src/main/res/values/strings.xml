@@ -36,14 +36,8 @@
     <string name="butt_label_week">Week</string>
     <string name="butt_label_month">Month</string>
 
-
-    <!-- Strings related to AR -->
-    <string name="title_activity_ar">ARActivity</string>
-    <string name="wikitude_key">0Znl+rCLZF3NDzHkr/Rtn0LmUF6r9Rpn3dfLCnYnGGSYYGVnmuKtQd7MBBtsV3yxN1fgeN7vQZCmK3f/bIymsS31SwWWN2kIVEDdrAgkjYeqyuR0+qnKMpVh6sZZQKGjCOfKj4Y0VkchiMYIJPzon+watuj1qLKoUshGU1aPHclTYWx0ZWRfXxf2BSJ3ljL9+Xqnb8uQ9j5TiFmjjtEA0YCUiN7RZXByhLDAIYpQnTmzfDdHpcCnIxA4f/ZWF19kwUkyxHhQUDbHnv+0dtV7yXuGiIYV4hGXUgQz0ySFSG+vu/DbAslCuCVPkppcV00FVEeiMoitcgkoNWpzLKGvludCXJphJWV5r1RrKThqOt6KUDL+9gF2exhpob1QSRawTZAQP2pdM3a+bgUGEgFsHjD38punQgB5yTpuk7+/nikVDWnBSHwF/LM9epChWYaAZdpe30Csi2qOJXUQMDoliNdpKJyKiKcUMAR9aw1p76VgkP/Q8dYe/D9NWclOnYPUzo7AhTz//b4BDrKoYnVACuQHh54GaYF1PgDMp7dgGwBbwz4ccz/qqfGS8UY/EPdn3037ALiMPVmuote4Xxh0KT1y/pvWSb30FffkXZpKl58tcv7OmSysyV26mSMj8Cwpes1QFsXx+EsspLYNBVTfMVBgXT+evIoBr/llheoHtoY=</string>
-    <string name="location_fetching">Trying to find out where you are</string>
-    <string name="title_activity_settings">Settings</string>
-
     <!-- Strings related to Settings -->
+    <string name="title_activity_settings">Settings</string>
 
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>
@@ -93,12 +87,19 @@
 
     <!-- Example settings for Notifications -->
     <string name="pref_header_notifications">Notifications</string>
-
     <string name="pref_title_new_message_notifications">New message notifications</string>
-
     <string name="pref_title_ringtone">Ringtone</string>
     <string name="pref_ringtone_silent">Silent</string>
-
     <string name="pref_title_vibrate">Vibrate</string>
+
+    <!-- Strings related to AR -->
+    <string name="title_activity_ar">AR SoilSmart</string>
+    <string name="wikitude_key">0Znl+rCLZF3NDzHkr/Rtn0LmUF6r9Rpn3dfLCnYnGGSYYGVnmuKtQd7MBBtsV3yxN1fgeN7vQZCmK3f/bIymsS31SwWWN2kIVEDdrAgkjYeqyuR0+qnKMpVh6sZZQKGjCOfKj4Y0VkchiMYIJPzon+watuj1qLKoUshGU1aPHclTYWx0ZWRfXxf2BSJ3ljL9+Xqnb8uQ9j5TiFmjjtEA0YCUiN7RZXByhLDAIYpQnTmzfDdHpcCnIxA4f/ZWF19kwUkyxHhQUDbHnv+0dtV7yXuGiIYV4hGXUgQz0ySFSG+vu/DbAslCuCVPkppcV00FVEeiMoitcgkoNWpzLKGvludCXJphJWV5r1RrKThqOt6KUDL+9gF2exhpob1QSRawTZAQP2pdM3a+bgUGEgFsHjD38punQgB5yTpuk7+/nikVDWnBSHwF/LM9epChWYaAZdpe30Csi2qOJXUQMDoliNdpKJyKiKcUMAR9aw1p76VgkP/Q8dYe/D9NWclOnYPUzo7AhTz//b4BDrKoYnVACuQHh54GaYF1PgDMp7dgGwBbwz4ccz/qqfGS8UY/EPdn3037ALiMPVmuote4Xxh0KT1y/pvWSb30FffkXZpKl58tcv7OmSysyV26mSMj8Cwpes1QFsXx+EsspLYNBVTfMVBgXT+evIoBr/llheoHtoY=</string>
+    <string name="location_fetching">Trying to find out where you are</string>
+    <string name="compass_accuracy_low">Please re-calibrate compass by waving your device in a figure 8 motion.</string>
+    <string name="title_activity_sample_detail">SampleDetailActivity</string>
+    <string name="poi_name">Name</string>
+    <string name="poi_description">Description</string>
+    <string name="poi_id">ID</string>
 
 </resources>

@@ -40,12 +40,6 @@ public class NodeLocationsActivity extends BaseMenuActivity implements OnMapRead
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_node_locations);
-        final ActionBar bar = getSupportActionBar();
-        if (bar != null) {
-            bar.setDisplayShowHomeEnabled(true);
-            bar.setIcon(R.mipmap.soilsmart_icon);
-            bar.show();
-        }
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -60,13 +54,13 @@ public class NodeLocationsActivity extends BaseMenuActivity implements OnMapRead
         List<SoilSmartNode> tempNodes;
         mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 
-        LatLngBounds.Builder bounds = new LatLngBounds.Builder();
+        final LatLngBounds.Builder bounds = new LatLngBounds.Builder();
         String id;
         tempNodes = GetRandomNodes();
         nodes = new HashMap<>();
 
         for (SoilSmartNode node : tempNodes) {
-            LatLng coords = new LatLng(node.getLat(), node.getLon());
+            final LatLng coords = new LatLng(node.getLat(), node.getLon());
             bounds.include(coords);
             id = mMap.addMarker(new MarkerOptions().position(coords).icon(BitmapDescriptorFactory.fromResource(R.mipmap.soilsmart_icon))).getId();
             nodes.put(id, node);
@@ -121,7 +115,7 @@ public class NodeLocationsActivity extends BaseMenuActivity implements OnMapRead
         });
     }
 
-    public List<SoilSmartNode> GetRandomNodes() {
+    static public List<SoilSmartNode> GetRandomNodes() {
         // Lat/lon max/min for the Work family's grove
         double latMax = 33.349969;
         double latMin = 33.349292;

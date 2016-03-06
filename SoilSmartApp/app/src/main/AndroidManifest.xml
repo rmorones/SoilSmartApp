@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="soilsmart.soilsmartapp">
+<manifest package="soilsmart.soilsmartapp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -24,6 +24,7 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-feature
         android:name="android.hardware.location"
         android:required="true" />
@@ -112,12 +113,12 @@
         <activity
             android:name=".views.ARActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:label="@string/title_activity_ar"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_ar" />
         <activity android:name=".views.BaseMenuActivity" />
         <activity
-            android:name=".views.SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:name=".views.SampleDetailActivity"
+            android:label="@string/title_activity_sample_detail"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
