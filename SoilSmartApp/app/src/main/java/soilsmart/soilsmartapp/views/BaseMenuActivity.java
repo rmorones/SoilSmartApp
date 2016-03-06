@@ -40,6 +40,7 @@ public class BaseMenuActivity extends AppCompatActivity {
                 return true;
             case R.id.settings_activity:
                 //action
+                launchActivity(SettingsActivity.class);
                 return true;
             case R.id.ar_activity:
                 //action
