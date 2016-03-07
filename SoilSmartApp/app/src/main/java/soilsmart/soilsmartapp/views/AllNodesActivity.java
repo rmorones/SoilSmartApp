@@ -123,14 +123,14 @@ public class AllNodesActivity extends BaseMenuActivity {
             int numSubcolumns = 1;
             int numColumns = tempnodes.size();
 
-            List<AxisValue> axisValues = new ArrayList<AxisValue>();
-            List<Column> columns = new ArrayList<Column>();
+            List<AxisValue> axisValues = new ArrayList<>();
+            List<Column> columns = new ArrayList<>();
             List<SubcolumnValue> values;
             for (int i = 0; i < numColumns; ++i) {
 
-                values = new ArrayList<SubcolumnValue>();
+                values = new ArrayList<>();
                 for (int j = 0; j < numSubcolumns; ++j) {
-                    values.add(new SubcolumnValue((float) tempnodes.get(i).getValuesLvl1Avg(), ChartUtils.COLORS[(j + 0) % ChartUtils.COLORS.length]));
+                    values.add(new SubcolumnValue((float) tempnodes.get(i).getValuesLvl1Avg(), ChartUtils.COLORS[(j) % ChartUtils.COLORS.length]));
                     values.add(new SubcolumnValue((float) tempnodes.get(i).getValuesLvl2Avg(), ChartUtils.COLORS[(j + 1) % ChartUtils.COLORS.length]));
                     values.add(new SubcolumnValue((float) tempnodes.get(i).getValuesLvl3Avg(), ChartUtils.COLORS[(j + 2) % ChartUtils.COLORS.length]));
                 }
@@ -189,7 +189,7 @@ public class AllNodesActivity extends BaseMenuActivity {
             Line line = new Line(values);
             line.setColor(ChartUtils.COLOR_GREEN).setCubic(true);
 
-            List<Line> lines = new ArrayList<Line>();
+            List<Line> lines = new ArrayList<>();
             lines.add(line);
             line.setShape(shape);
             line.setCubic(isCubic);
@@ -224,9 +224,9 @@ public class AllNodesActivity extends BaseMenuActivity {
             double[] points2 = tempnodes.get(nodeIndex).getValuesLvl2();
             double[] points3 = tempnodes.get(nodeIndex).getValuesLvl3();
 
-            List<Line> lines = new ArrayList<Line>();
+            List<Line> lines = new ArrayList<>();
 
-            List<PointValue> values = new ArrayList<PointValue>();
+            List<PointValue> values = new ArrayList<>();
             for (int j = 0; j < points1.length; ++j) {
                 values.add(new PointValue(j, (float) points1[j]));
             }
@@ -241,11 +241,11 @@ public class AllNodesActivity extends BaseMenuActivity {
             line.setHasLines(hasLines);
             line.setHasPoints(hasPoints);
             if (pointsHaveDifferentColor){
-                line.setPointColor(ChartUtils.COLORS[(0 + 1) % ChartUtils.COLORS.length]);
+                line.setPointColor(ChartUtils.COLORS[(1) % ChartUtils.COLORS.length]);
             }
             lines.add(0,line);
 
-            List<PointValue> values2 = new ArrayList<PointValue>();
+            List<PointValue> values2 = new ArrayList<>();
             for (int j = 0; j < points2.length; ++j) {
                 values2.add(new PointValue(j, (float) points2[j]));
             }
