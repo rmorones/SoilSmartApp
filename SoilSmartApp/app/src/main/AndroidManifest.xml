@@ -117,7 +117,8 @@
         <activity android:name=".views.BaseMenuActivity" />
         <activity
             android:name=".views.SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings" />
+        <activity android:name=".views.Settings"></activity>
     </application>
 
 </manifest>

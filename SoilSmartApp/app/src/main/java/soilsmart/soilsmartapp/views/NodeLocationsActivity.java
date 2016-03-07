@@ -93,30 +93,31 @@ public class NodeLocationsActivity extends BaseMenuActivity implements OnMapRead
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
             @Override
             public View getInfoWindow(Marker marker) {
-                return null;
+
+                View v = getLayoutInflater().inflate(R.layout.node_location_info_window, null);
+                SoilSmartNode node = nodes.get(marker.getId());
+
+                TextView tvID = (TextView) v.findViewById(R.id.id_window);
+                TextView tvLat = (TextView) v.findViewById(R.id.latitude_window);
+                TextView tvLon = (TextView) v.findViewById(R.id.longitude_window);
+
+                TextView tvLvl1 = (TextView) v.findViewById(R.id.level_1_window);
+                TextView tvLvl2 = (TextView) v.findViewById(R.id.level_2_window);
+                TextView tvLvl3 = (TextView) v.findViewById(R.id.level_3_window);
+
+                tvID.setText(node.getId());
+                tvLat.setText(String.format("%.6f", node.getLat()));
+                tvLon.setText(String.format("%.6f", node.getLon()));
+
+                tvLvl1.setText(String.format("%.2f", node.getValuesLvl1Avg() * 100) + "%");
+                tvLvl2.setText(String.format("%.2f", node.getValuesLvl2Avg() * 100) + "%");
+                tvLvl3.setText(String.format("%.2f", node.getValuesLvl3Avg() * 100) + "%");
+                return v;
             }
 
             @Override
             public View getInfoContents(Marker marker) {
-                View v = getLayoutInflater().inflate(R.layout.node_location_info_window, null);
-                SoilSmartNode node = nodes.get(marker.getId());
-
-                TextView tvID = (TextView) v.findViewById(R.id.tv_ID);
-                TextView tvLat = (TextView) v.findViewById(R.id.tv_lat);
-                TextView tvLon = (TextView) v.findViewById(R.id.tv_lon);
-
-                TextView tvLvl1 = (TextView) v.findViewById(R.id.tv_lvl1);
-                TextView tvLvl2 = (TextView) v.findViewById(R.id.tv_lvl2);
-                TextView tvLvl3 = (TextView) v.findViewById(R.id.tv_lvl3);
-
-                tvID.setText("ID: " + node.getId());
-                tvLat.setText("Latitude: " + String.format("%.6f", node.getLat()));
-                tvLon.setText("Longitude: " + String.format("%.6f", node.getLon()));
-
-                tvLvl1.setText("Lvl1 Avg: " + String.format("%.2f", node.getValuesLvl1Avg() * 100) + "%");
-                tvLvl2.setText("Lvl2 Avg: " + String.format("%.2f", node.getValuesLvl2Avg() * 100) + "%");
-                tvLvl3.setText("Lvl3 Avg: " + String.format("%.2f", node.getValuesLvl3Avg() * 100) + "%");
-                return v;
+                return null;
             }
         });
     }

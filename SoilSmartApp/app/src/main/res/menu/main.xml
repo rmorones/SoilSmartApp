@@ -2,8 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/locations_activity"
         android:title="Locations" />
-    <item android:id="@+id/node_info_activity"
-        android:title="Node Info" />
     <item android:id="@+id/all_nodes_activity"
         android:title="All Nodes" />
     <item android:id="@+id/leakage_activity"
