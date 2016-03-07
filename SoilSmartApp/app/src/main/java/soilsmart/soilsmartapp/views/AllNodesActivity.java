@@ -50,9 +50,7 @@ public class AllNodesActivity extends BaseMenuActivity {
             //populate nodes list with "random" data
             tempNodes = NodeLocationsActivity.GetRandomNodes();
             PlaceholderFragment frag = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putSerializable("nodes", (Serializable) tempNodes);
-            frag.setArguments(args);
+            frag.setNodes(tempNodes);
             getSupportFragmentManager().beginTransaction().add(R.id.container, frag).commit();
         }
 
@@ -96,12 +94,13 @@ public class AllNodesActivity extends BaseMenuActivity {
         public PlaceholderFragment() {
         }
 
+        public void setNodes(List<SoilSmartNode> nodes) {
+            this.tempnodes = nodes;
+        }
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_line_column_dependency, container, false);
-            //node sent from NodeDetailActivity
-            Bundle bundle = getArguments();
-            tempnodes = (List<SoilSmartNode>) bundle.get("nodes");
 
             // *** TOP LINE CHART ***
             chartTop = (LineChartView) rootView.findViewById(R.id.chart_top);
