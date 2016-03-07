@@ -2,6 +2,8 @@ package soilsmart.soilsmartapp;
 
 import java.io.Serializable;
 import java.util.List;
+import android.content.res.Resources;
+import soilsmart.soilsmartapp.views.RegisterActivity;
 
 /**
  * SoilSmartApp
@@ -34,5 +36,9 @@ public class User implements Serializable {
 
     public String getPasswordHash() {
         return passwordHash;
+    }
+
+    public void setPasswordHash(String passHash) {
+        passwordHash = passHash;
     }
 }
