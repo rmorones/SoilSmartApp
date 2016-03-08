@@ -19,7 +19,7 @@ import soilsmart.soilsmartapp.UserLocalStore;
 public class SettingsActivity extends BaseMenuActivity {
 
     private UserLocalStore userLocalStore;
-    User user;
+    private User user;
     View changePassView;
 
     @Override

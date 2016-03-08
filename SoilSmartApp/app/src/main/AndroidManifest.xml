@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="soilsmart.soilsmartapp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="soilsmart.soilsmartapp">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -37,6 +37,8 @@
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -107,7 +109,7 @@
             android:label="AllNodes"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -131,6 +133,10 @@
             android:name=".views.SampleDetailActivity"
             android:label="@string/title_activity_sample_detail"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <service
+            android:name=".LeakageDetectionService"
+            android:exported="false"></service>
     </application>
 
 </manifest>

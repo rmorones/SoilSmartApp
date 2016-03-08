@@ -63,4 +63,7 @@ public class SoilSmartService implements ISoilSmartService, IAuthenticateUser {
         return false;
     }
 
+    @Override
+    public boolean isLeakageDetected(final User user) {return true;}
+
 }
