@@ -8,8 +8,8 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import soilsmart.soilsmartapp.R;
@@ -35,8 +35,8 @@ public class SettingsActivity extends BaseMenuActivity {
         userLocalStore = new UserLocalStore(this);
         user = userLocalStore.getLoggedInUser();
 
-        final Button logout = (Button) findViewById(R.id.button_logout);
-        final Button changepass = (Button) findViewById(R.id.button_change_password);
+        final LinearLayout logout = (LinearLayout) findViewById(R.id.log_out_row);
+        final LinearLayout changepass = (LinearLayout) findViewById(R.id.change_pass_row);
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,12 +57,31 @@ public class SettingsActivity extends BaseMenuActivity {
     private void LogOut() {
         userLocalStore.clearUserData();
         userLocalStore.setUserLoggedIn(false);
-        finish();
-        System.exit(0);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final TextView confirmLogout = new TextView(this);
+        confirmLogout.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        confirmLogout.setText("Are you sure you want to log out?");
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.setPositiveButton("Log Out", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+                System.exit(0);
+            }
+        });
+        builder.show();
+
     }
 
     private void ChangePassword() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final AlertDialog.Builder builderResult = new AlertDialog.Builder(this);
         LayoutInflater factory;
 
