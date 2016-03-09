@@ -16,10 +16,12 @@ public class SoilSmartNode implements Serializable {
     private double valuesLvl1[];
     private double valuesLvl2[];
     private double valuesLvl3[];
+    private double monthValues[];
+    private double weekValues[];
 
 
     public SoilSmartNode(String id, String zone, double lat, double lon, Date startDate,
-                  double[] values1, double[] values2, double[] values3) {
+                  double[] values1, double[] values2, double[] values3, double monthVal[], double weekVal[]) {
         this.lat = lat;
         this.lon = lon;
         this.zone = zone;
@@ -31,6 +33,10 @@ public class SoilSmartNode implements Serializable {
         System.arraycopy(values2, 0, valuesLvl2, 0, valuesLvl2.length);
         this.valuesLvl3 = new double[values3.length];
         System.arraycopy(values3, 0, valuesLvl3, 0, valuesLvl3.length);
+        this.monthValues = new double[monthVal.length];
+        System.arraycopy(monthVal, 0, monthValues, 0, monthValues.length);
+        this.weekValues = new double[weekVal.length];
+        System.arraycopy(weekVal, 0, weekValues, 0, weekValues.length);
     }
 
     public double getLat() {
@@ -62,6 +68,12 @@ public class SoilSmartNode implements Serializable {
     }
     public double[] getValuesLvl3() {
         return valuesLvl3;
+    }
+    public double[] getValuesMonth() {
+        return monthValues;
+    }
+    public double[] getValuesWeek() {
+        return weekValues;
     }
 
     public double getValuesLvl1Avg() {

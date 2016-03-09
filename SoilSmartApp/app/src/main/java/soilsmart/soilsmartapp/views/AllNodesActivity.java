@@ -145,7 +145,7 @@ public class AllNodesActivity extends BaseMenuActivity {
             columnData.setStacked(true);
 
             columnData.setAxisXBottom(new Axis(axisValues).setHasLines(true).setName("Node ID"));
-            columnData.setAxisYLeft(new Axis().setHasLines(true).setMaxLabelChars(3));
+            columnData.setAxisYLeft(new Axis().setHasLines(true).setMaxLabelChars(3).setName("Moisture Level (AVG)"));
 
             chartBottom.setColumnChartData(columnData);
 
@@ -182,7 +182,7 @@ public class AllNodesActivity extends BaseMenuActivity {
             List<PointValue> values = new ArrayList<PointValue>();
             for (int i = 0; i < numValues; ++i) {
                 values.add(new PointValue(i, 0));
-                axisValues.add(new AxisValue(i).setLabel("day"));
+                //axisValues.add(new AxisValue(i).setLabel("day"));
             }
 
             Line line = new Line(values);
@@ -208,7 +208,7 @@ public class AllNodesActivity extends BaseMenuActivity {
             chartTop.setViewportCalculationEnabled(false);
 
             // And set initial max viewport and current viewport- remember to set viewports after data.
-            Viewport v = new Viewport(0, 1, 6, 0);
+            Viewport v = new Viewport(0, 100, 6, 0);
             chartTop.setMaximumViewport(v);
             chartTop.setCurrentViewport(v);
 
@@ -286,7 +286,7 @@ public class AllNodesActivity extends BaseMenuActivity {
                 Axis axisX = new Axis().setHasLines(true);
                 Axis axisY = new Axis().setHasLines(true);
                 if (hasAxesNames) {
-                    axisX.setName("Previous Days");
+                    axisX.setName("Previous Days (Days Ago)");
                     axisY.setName("Moisture");
                 }
                 lineData.setAxisXBottom(axisX);
@@ -311,7 +311,7 @@ public class AllNodesActivity extends BaseMenuActivity {
             @Override
             public void onValueDeselected() {
 
-                generateLineData(ChartUtils.COLOR_GREEN, 0, 0);
+                generateInitialLineData();
 
             }
         }
