@@ -103,9 +103,9 @@ public class NodeLocationsActivity extends BaseMenuActivity implements OnMapRead
                 tvLat.setText(String.format("%.6f", node.getLat()));
                 tvLon.setText(String.format("%.6f", node.getLon()));
 
-                tvLvl1.setText(String.format("%.2f", node.getValuesLvl1Avg() * 100) + "%");
-                tvLvl2.setText(String.format("%.2f", node.getValuesLvl2Avg() * 100) + "%");
-                tvLvl3.setText(String.format("%.2f", node.getValuesLvl3Avg() * 100) + "%");
+                tvLvl1.setText(String.format("%.2f", node.getValuesLvl1Avg() ) + "%");
+                tvLvl2.setText(String.format("%.2f", node.getValuesLvl2Avg() ) + "%");
+                tvLvl3.setText(String.format("%.2f", node.getValuesLvl3Avg() ) + "%");
                 return v;
             }
 
@@ -123,9 +123,19 @@ public class NodeLocationsActivity extends BaseMenuActivity implements OnMapRead
         double lonMax = -117.180180;
         double lonMin = -117.178305;
 
-        double[] val1 = {0.1, 0.15, 0.125};
-        double[] val2 = {0.2, 0.25, 0.225};
-        double[] val3 = {0.3, 0.35, 0.325};
+        double[] val1 = {10, 15, 12, 10, 15, 12, 10, 15, 12};
+        double[] val2 = {20, 25, 22, 20, 25, 22, 20, 25, 22};
+        double[] val3 = {30, 35, 32, 30, 35, 32, 30, 35, 32};
+        double[] val4 = {30, 50, 20, 30, 50, 20, 30, 50, 20};
+        double[] val5 = {40, 60, 30, 40, 60, 30, 40, 60, 30};
+        double[] val6 = {50, 70, 40, 50, 70, 40, 50, 70, 40};
+        double[] month = {39, 92, 18, 80, 14, 68, 60, 17, 21, 26, 23, 66, 51, 82, 81, 75, 11, 13,
+                70, 87, 88, 56, 25, 78, 20, 61, 76, 93, 86, 62, 12, 1, 95, 96, 30, 83, 6, 31, 98,
+                8, 37, 15, 65, 46, 32, 35, 89, 3, 41, 73, 48, 99, 52, 19, 100, 29, 43, 27, 54, 36,
+                67, 58, 54, 10, 75, 79, 17, 80, 57, 74, 100, 93, 72, 9, 11, 55, 34, 44, 96, 51, 98,
+                60, 48, 38, 19, 81, 1, 88, 35, 33, 26, 85, 30, 71, 52, 32, 59, 63, 65, 5, 16, 27,
+                39, 22, 31, 40, 61, 18, 66, 47, 46, 83, 23, 7, 64, 21, 78, 42, 20, 43};
+        double [] week = {64, 94, 1, 13, 76, 91, 51, 45, 25, 79, 9, 23, 80, 43, 97, 40, 84, 58, 46, 32, 75};
 
         List<SoilSmartNode> nodes = new ArrayList<>();
         int i;
@@ -138,11 +148,17 @@ public class NodeLocationsActivity extends BaseMenuActivity implements OnMapRead
             lat = latMin + (latMax - latMin) * r.nextDouble();
             lon = lonMin + (lonMax - lonMin) * r.nextDouble();
 
-            SoilSmartNode node = new SoilSmartNode(Integer.toString(i), Integer.toString((i / 4)), lat,
-                    lon, date, val1, val2, val3);
-            nodes.add(node);
+            if (i % 2 == 0) {
+                SoilSmartNode node = new SoilSmartNode(Integer.toString(i), Integer.toString((i / 4)), lat,
+                        lon, date, val1, val2, val3, month, week);
+                nodes.add(node);
+            } else {
+                SoilSmartNode node = new SoilSmartNode(Integer.toString(i), Integer.toString((i / 4)), lat,
+                        lon, date, val4, val5, val6, month, week);
+                nodes.add(node);
+            }
         }
-        return nodes;
+            return nodes;
     }
 
     @Override

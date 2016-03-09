@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import soilsmart.soilsmartapp.R;
 import soilsmart.soilsmartapp.UserLocalStore;
@@ -75,6 +76,8 @@ public class NodeDetailActivity extends BaseMenuActivity {
         buttonClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                getSupportFragmentManager().beginTransaction().
+                        remove(getSupportFragmentManager().findFragmentById(R.id.container)).commit();
                 PlaceholderFragment frag = new PlaceholderFragment();
                 Bundle args = new Bundle();
                 args.putSerializable("node", node);
@@ -88,6 +91,8 @@ public class NodeDetailActivity extends BaseMenuActivity {
         buttonClick2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                getSupportFragmentManager().beginTransaction().
+                        remove(getSupportFragmentManager().findFragmentById(R.id.container)).commit();
                 PlaceholderFragment frag = new PlaceholderFragment();
                 Bundle args = new Bundle();
                 args.putSerializable("node", node);
@@ -101,6 +106,8 @@ public class NodeDetailActivity extends BaseMenuActivity {
         buttonClick3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                getSupportFragmentManager().beginTransaction().
+                        remove(getSupportFragmentManager().findFragmentById(R.id.container)).commit();
                 PlaceholderFragment frag = new PlaceholderFragment();
                 Bundle args = new Bundle();
                 args.putSerializable("node", node);
@@ -131,6 +138,7 @@ public class NodeDetailActivity extends BaseMenuActivity {
     public static class PlaceholderFragment extends Fragment {
 
         private SoilSmartNode node;
+        private String option;
 
         private LineChartView chart;
         private LineChartData data;
@@ -162,6 +170,7 @@ public class NodeDetailActivity extends BaseMenuActivity {
             //node sent from NodeDetailActivity
             Bundle bundle = getArguments();
             node = (SoilSmartNode) bundle.get("node");
+            option = bundle.getString("button");
             //figure out what button was pressed so that the graph can be redrawn
             String button_selection = (String) bundle.get("button");
             if(button_selection != null){
@@ -172,7 +181,18 @@ public class NodeDetailActivity extends BaseMenuActivity {
             chart.setOnValueTouchListener(new ValueTouchListener());
 
             // Generate lines.
-            generateData();
+            if(option == null){
+                generateData();
+            }
+            else if(option.compareTo("month") == 0) {
+                generateDataMonth();
+            }
+            else if (option.compareTo("week") == 0){
+                generateDataWeek();
+            }
+            else{
+                generateData();
+            }
 
             // Disable viewpirt recalculations, see toggleCubic() method for more info.
             chart.setViewportCalculationEnabled(false);
@@ -193,7 +213,7 @@ public class NodeDetailActivity extends BaseMenuActivity {
             shape = ValueShape.CIRCLE;
             isFilled = false;
             hasLabels = false;
-            isCubic = false;
+            isCubic = true;
             hasLabelForSelected = false;
             pointsHaveDifferentColor = false;
 
@@ -205,9 +225,21 @@ public class NodeDetailActivity extends BaseMenuActivity {
             // Reset viewport height range to (0,100)
             final Viewport v = new Viewport(chart.getMaximumViewport());
             v.bottom = 0;
-            v.top = 1;
+            v.top = 100;
             v.left = 0;
-            v.right = numberOfPoints - 1;
+            if(option == null){
+                v.right = node.getValuesLvl1().length;
+            }
+            else if(option.compareTo("month") == 0) {
+                v.right = node.getValuesMonth().length;
+            }
+            else if (option.compareTo("week") == 0){
+                v.right = node.getValuesWeek().length;
+            }
+            else{
+                v.right = node.getValuesLvl1().length;
+            }
+            //v.right = numberOfPoints - 1;
             chart.setMaximumViewport(v);
             chart.setCurrentViewport(v);
         }
@@ -282,7 +314,7 @@ public class NodeDetailActivity extends BaseMenuActivity {
                 Axis axisY = new Axis().setHasLines(true);
                 if (hasAxesNames) {
                     axisX.setName("Time");
-                    axisY.setName("Moisture Level");
+                    axisY.setName("Moisture Level (%)");
                 }
                 data.setAxisXBottom(axisX);
                 data.setAxisYLeft(axisY);
@@ -294,6 +326,98 @@ public class NodeDetailActivity extends BaseMenuActivity {
             data.setBaseValue(Float.NEGATIVE_INFINITY);
             chart.setLineChartData(data);
 
+        }
+
+        private void generateDataWeek(){
+            //values for the lines we are going to plot
+            double[] points1 = node.getValuesWeek();
+
+
+            List<Line> lines = new ArrayList<Line>();
+
+            List<PointValue> values = new ArrayList<PointValue>();
+            for (int j = 0; j < points1.length; ++j) {
+                values.add(new PointValue(j, (float) points1[j]));
+            }
+
+            Line line = new Line(values);
+            line.setColor(ChartUtils.COLORS[0]);
+            line.setShape(shape);
+            line.setCubic(isCubic);
+            line.setFilled(isFilled);
+            line.setHasLabels(hasLabels);
+            line.setHasLabelsOnlyForSelected(hasLabelForSelected);
+            line.setHasLines(hasLines);
+            line.setHasPoints(hasPoints);
+            if (pointsHaveDifferentColor){
+                line.setPointColor(ChartUtils.COLORS[(0 + 1) % ChartUtils.COLORS.length]);
+            }
+            lines.add(0,line);
+
+            data = new LineChartData(lines);
+
+            if (hasAxes) {
+                Axis axisX = new Axis();
+                Axis axisY = new Axis().setHasLines(true);
+                if (hasAxesNames) {
+                    axisX.setName("Time");
+                    axisY.setName("Moisture Level (%)");
+                }
+                data.setAxisXBottom(axisX);
+                data.setAxisYLeft(axisY);
+            } else {
+                data.setAxisXBottom(null);
+                data.setAxisYLeft(null);
+            }
+
+            data.setBaseValue(Float.NEGATIVE_INFINITY);
+            chart.setLineChartData(data);
+        }
+
+        private void generateDataMonth(){
+            //values for the lines we are going to plot
+            double[] points1 = node.getValuesMonth();
+
+
+            List<Line> lines = new ArrayList<Line>();
+
+            List<PointValue> values = new ArrayList<PointValue>();
+            for (int j = 0; j < points1.length; ++j) {
+                values.add(new PointValue(j, (float) points1[j]));
+            }
+
+            Line line = new Line(values);
+            line.setColor(ChartUtils.COLORS[0]);
+            line.setShape(shape);
+            line.setCubic(isCubic);
+            line.setFilled(isFilled);
+            line.setHasLabels(hasLabels);
+            line.setHasLabelsOnlyForSelected(hasLabelForSelected);
+            line.setHasLines(hasLines);
+            line.setHasPoints(hasPoints);
+            if (pointsHaveDifferentColor){
+                line.setPointColor(ChartUtils.COLORS[(0 + 1) % ChartUtils.COLORS.length]);
+            }
+            lines.add(0,line);
+
+            data = new LineChartData(lines);
+
+            if (hasAxes) {
+                Axis axisX = new Axis();
+                Axis axisY = new Axis().setHasLines(true);
+                if (hasAxesNames) {
+                    axisX.setName("Time");
+                    axisY.setName("Moisture Level (%)");
+                }
+                data.setAxisXBottom(axisX);
+                data.setAxisYLeft(axisY);
+            } else {
+                data.setAxisXBottom(null);
+                data.setAxisYLeft(null);
+            }
+
+            data.setBaseValue(Float.NEGATIVE_INFINITY);
+            chart.setLineChartData(data);
         }
 
         /**
@@ -375,70 +499,6 @@ public class NodeDetailActivity extends BaseMenuActivity {
 
         }
 
-        private void toggleFilled() {
-            isFilled = !isFilled;
-
-            generateData();
-        }
-
-        private void togglePointColor() {
-            pointsHaveDifferentColor = !pointsHaveDifferentColor;
-
-            generateData();
-        }
-
-        private void setCircles() {
-            shape = ValueShape.CIRCLE;
-
-            generateData();
-        }
-
-        private void setSquares() {
-            shape = ValueShape.SQUARE;
-
-            generateData();
-        }
-
-        private void setDiamonds() {
-            shape = ValueShape.DIAMOND;
-
-            generateData();
-        }
-
-        private void toggleLabels() {
-            hasLabels = !hasLabels;
-
-            if (hasLabels) {
-                hasLabelForSelected = false;
-                chart.setValueSelectionEnabled(hasLabelForSelected);
-            }
-
-            generateData();
-        }
-
-        private void toggleLabelForSelected() {
-            hasLabelForSelected = !hasLabelForSelected;
-
-            chart.setValueSelectionEnabled(hasLabelForSelected);
-
-            if (hasLabelForSelected) {
-                hasLabels = false;
-            }
-
-            generateData();
-        }
-
-        private void toggleAxes() {
-            hasAxes = !hasAxes;
-
-            generateData();
-        }
-
-        private void toggleAxesNames() {
-            hasAxesNames = !hasAxesNames;
-
-            generateData();
-        }
 
         /**
          * To animate values you have to change targets values and then call {@link Chart#startDataAnimation()}
