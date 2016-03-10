@@ -1,5 +1,7 @@
 package soilsmart.soilsmartapp.views;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Parcelable;
 import android.os.StrictMode;
@@ -21,12 +23,14 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import soilsmart.soilsmartapp.LeakageDetectionService;
 import soilsmart.soilsmartapp.R;
 import soilsmart.soilsmartapp.SoilSmartNode;
 import soilsmart.soilsmartapp.SoilSmartService;
@@ -37,6 +41,7 @@ public class NodeLocationsActivity extends BaseMenuActivity implements OnMapRead
     private GoogleMap mMap;
     private UserLocalStore userLocalStore;
     public Map<String,SoilSmartNode> nodes;
+    private int notificationFrequency = 5; // minutes
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +55,14 @@ public class NodeLocationsActivity extends BaseMenuActivity implements OnMapRead
         final StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         userLocalStore = new UserLocalStore(this);
+        Intent leakageDetection = new Intent(this, LeakageDetectionService.class);
+        PendingIntent pendingIntent = PendingIntent.getService(this,0,leakageDetection,0);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.SECOND,notificationFrequency * 60);
+        long frequency = notificationFrequency * 60 * 1000; // miliseconds
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),frequency,pendingIntent);
     }
 
     @Override

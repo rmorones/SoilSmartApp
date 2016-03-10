@@ -49,4 +49,6 @@ public interface ISoilSmartService {
      *
      */
     boolean registerUser(User user, String key);
+
+    boolean isLeakageDetected(User user);
 }
