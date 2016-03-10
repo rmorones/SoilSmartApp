@@ -116,7 +116,8 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private boolean isValidKey(String key) {
-        return key.length() > 10;
+        //change back later to allow for 8-character keys
+        return key.length() > 9;
     }
 
     private void attemptRegister() {
