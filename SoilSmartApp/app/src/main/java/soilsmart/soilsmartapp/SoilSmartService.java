@@ -59,11 +59,12 @@ public class SoilSmartService implements ISoilSmartService, IAuthenticateUser {
         String credentials;
         credentials = "grant_type=password&username=" +user.getEmail() + "&password=" + user.getPasswordHash();
         new getData().execute("http://alphasoilsmart.azurewebsites.net/token", credentials);
-        Log.w("myApp", async_result);
+        //Log.w("myApp", async_result);
         try {
             JSONObject tokn = new JSONObject(async_result);
+            async_result = null;
             token = tokn.getString("access_token");
-            Log.w("myApp", token);
+            //Log.w("myApp", token);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -112,13 +113,15 @@ public class SoilSmartService implements ISoilSmartService, IAuthenticateUser {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.w("myApp", register_user);
+        //Log.w("myApp", register_user);
 
         new getData().execute("http://alphasoilsmart.azurewebsites.net/api/Account/Register", register_user);
         if (async_result == "success") {
+            async_result = null;
             return true;
         }
         else{
+            async_result = null;
             return false;
         }
     }
@@ -140,20 +143,19 @@ public class SoilSmartService implements ISoilSmartService, IAuthenticateUser {
                 urlConnection.setDoOutput(true);
                 urlConnection.setDoInput(true);
                 urlConnection.setRequestMethod("POST");
-                //urlConnection.setRequestProperty("Accept", "application/json; */*");
-                //urlConnection.setRequestProperty("Content-Type", "application/json");
+                urlConnection.setRequestProperty("Accept", "application/json");
+                urlConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
                 //urlConnection.setRequestProperty("Content-Length", ""+args[1].getBytes().length);
-                urlConnection.setChunkedStreamingMode(0);
-                Log.w("myApp", args[1]);
+                //Log.w("myApp", args[1]);
 
-                OutputStream os = urlConnection.getOutputStream();
-                os.write(args[1].getBytes("UTF-8"));
+                OutputStreamWriter os = new OutputStreamWriter(urlConnection.getOutputStream(), "UTF-8");
+                os.write(args[1]);
                 os.close();
 
-                urlConnection.connect();
-                Log.w("myApp", "CONNECTED");
+                //urlConnection.connect();
+                //Log.w("myApp", "CONNECTED");
                 try {
-                    Log.w("myAPP", String.valueOf(urlConnection.getResponseCode()));
+                    //Log.w("myAPP", String.valueOf(urlConnection.getResponseCode()));
                     if (urlConnection.getResponseCode() == 200 && args[0] == "http://alphasoilsmart.azurewebsites.net/api/Account/Register") {
                         return "success";
                     }
@@ -180,7 +182,7 @@ public class SoilSmartService implements ISoilSmartService, IAuthenticateUser {
 
         @Override
         protected void onPostExecute(String result) {
-            Log.w("myApp", result);
+            //Log.w("myApp", result);
             async_result = result;
             //Do something with the JSON string
 
