@@ -2,6 +2,7 @@ package soilsmart.soilsmartapp.views;
 
 import android.content.Intent;
 import android.os.Parcelable;
+import android.os.StrictMode;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +29,7 @@ import java.util.Random;
 
 import soilsmart.soilsmartapp.R;
 import soilsmart.soilsmartapp.SoilSmartNode;
+import soilsmart.soilsmartapp.SoilSmartService;
 import soilsmart.soilsmartapp.UserLocalStore;
 
 public class NodeLocationsActivity extends BaseMenuActivity implements OnMapReadyCallback {
@@ -45,6 +47,8 @@ public class NodeLocationsActivity extends BaseMenuActivity implements OnMapRead
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        final StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         userLocalStore = new UserLocalStore(this);
     }
 
@@ -56,7 +60,8 @@ public class NodeLocationsActivity extends BaseMenuActivity implements OnMapRead
 
         final LatLngBounds.Builder bounds = new LatLngBounds.Builder();
         String id;
-        tempNodes = GetRandomNodes();
+        SoilSmartService.getInstance().setUserLocalStore(userLocalStore);
+        tempNodes = SoilSmartService.getInstance().getNodes(userLocalStore.getLoggedInUser());
         nodes = new HashMap<>();
 
         for (SoilSmartNode node : tempNodes) {

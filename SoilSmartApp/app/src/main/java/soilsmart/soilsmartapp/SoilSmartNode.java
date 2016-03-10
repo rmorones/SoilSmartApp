@@ -39,6 +39,29 @@ public class SoilSmartNode implements Serializable {
         System.arraycopy(weekVal, 0, weekValues, 0, weekValues.length);
     }
 
+    public SoilSmartNode(String id, String zone, double lat, double lon, Date startDate,
+                         double[] values1, double[] values2, double[] values3) {
+        this.lat = lat;
+        this.lon = lon;
+        this.zone = zone;
+        this.id = id;
+        this.startDate = startDate;
+        if (values1 != null) {
+            this.valuesLvl1 = new double[values1.length];
+            System.arraycopy(values1, 0, valuesLvl1, 0, valuesLvl1.length);
+        }
+        if (values2 != null) {
+            this.valuesLvl2 = new double[values2.length];
+            System.arraycopy(values2, 0, valuesLvl2, 0, valuesLvl2.length);
+        }
+        if (values3 != null) {
+            this.valuesLvl3 = new double[values3.length];
+            System.arraycopy(values3, 0, valuesLvl3, 0, valuesLvl3.length);
+        }
+        this.monthValues = null;
+        this.weekValues = null;
+    }
+
     public double getLat() {
         return lat;
     }

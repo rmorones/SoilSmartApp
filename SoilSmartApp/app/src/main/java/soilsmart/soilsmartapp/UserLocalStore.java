@@ -46,6 +46,16 @@ public class UserLocalStore {
         spEditor.apply();
     }
 
+    public void storeToken(String token) {
+        SharedPreferences.Editor spEditor = userLocalDatabase.edit();
+        spEditor.putString("token", token);
+        spEditor.apply();
+    }
+
+    public String getToken() {
+        return userLocalDatabase.getString("token", "");
+    }
+
     public boolean getUserLoggedIn() {
        return userLocalDatabase.getBoolean("loggedIn", false);
     }

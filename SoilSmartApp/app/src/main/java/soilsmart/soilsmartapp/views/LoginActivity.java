@@ -361,6 +361,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected User doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             final SoilSmartService soilSmartService = SoilSmartService.getInstance();
+            soilSmartService.setUserLocalStore(userLocalStore);
             try {
                 if (soilSmartService.authenticate(user)) {
                     return user;
