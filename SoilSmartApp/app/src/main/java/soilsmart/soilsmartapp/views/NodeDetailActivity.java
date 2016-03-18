@@ -41,6 +41,7 @@ public class NodeDetailActivity extends BaseMenuActivity {
     private UserLocalStore userLocalStore;
     private SoilSmartNode node;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,6 +160,14 @@ public class NodeDetailActivity extends BaseMenuActivity {
         private boolean hasLabelForSelected = false;
         private boolean pointsHaveDifferentColor;
 
+        double[] month = {39, 92, 18, 80, 14, 68, 60, 17, 21, 26, 23, 66, 51, 82, 81, 75, 11, 13,
+                70, 87, 88, 56, 25, 78, 20, 61, 76, 93, 86, 62, 12, 1, 95, 96, 30, 83, 6, 31, 98,
+                8, 37, 15, 65, 46, 32, 35, 89, 3, 41, 73, 48, 99, 52, 19, 100, 29, 43, 27, 54, 36,
+                67, 58, 54, 10, 75, 79, 17, 80, 57, 74, 100, 93, 72, 9, 11, 55, 34, 44, 96, 51, 98,
+                60, 48, 38, 19, 81, 1, 88, 35, 33, 26, 85, 30, 71, 52, 32, 59, 63, 65, 5, 16, 27,
+                39, 22, 31, 40, 61, 18, 66, 47, 46, 83, 23, 7, 64, 21, 78, 42, 20, 43};
+        double [] week = {64, 94, 1, 13, 76, 91, 51, 45, 25, 79, 9, 23, 80, 43, 97, 40, 84, 58, 46, 32, 75};
+
         public PlaceholderFragment() {
         }
 
@@ -231,10 +240,10 @@ public class NodeDetailActivity extends BaseMenuActivity {
                 v.right = node.getValuesLvl1().length;
             }
             else if(option.compareTo("month") == 0) {
-                v.right = node.getValuesMonth().length;
+                v.right = month.length;
             }
             else if (option.compareTo("week") == 0){
-                v.right = node.getValuesWeek().length;
+                v.right = week.length;
             }
             else{
                 v.right = node.getValuesLvl1().length;
@@ -330,7 +339,7 @@ public class NodeDetailActivity extends BaseMenuActivity {
 
         private void generateDataWeek(){
             //values for the lines we are going to plot
-            double[] points1 = node.getValuesWeek();
+            double[] points1 =  {64, 94, 1, 13, 76, 91, 51, 45, 25, 79, 9, 23, 80, 43, 97, 40, 84, 58, 46, 32, 75};
 
 
             List<Line> lines = new ArrayList<Line>();
@@ -376,7 +385,12 @@ public class NodeDetailActivity extends BaseMenuActivity {
 
         private void generateDataMonth(){
             //values for the lines we are going to plot
-            double[] points1 = node.getValuesMonth();
+            double[] points1 = {39, 92, 18, 80, 14, 68, 60, 17, 21, 26, 23, 66, 51, 82, 81, 75, 11, 13,
+                    70, 87, 88, 56, 25, 78, 20, 61, 76, 93, 86, 62, 12, 1, 95, 96, 30, 83, 6, 31, 98,
+                    8, 37, 15, 65, 46, 32, 35, 89, 3, 41, 73, 48, 99, 52, 19, 100, 29, 43, 27, 54, 36,
+                    67, 58, 54, 10, 75, 79, 17, 80, 57, 74, 100, 93, 72, 9, 11, 55, 34, 44, 96, 51, 98,
+                    60, 48, 38, 19, 81, 1, 88, 35, 33, 26, 85, 30, 71, 52, 32, 59, 63, 65, 5, 16, 27,
+                    39, 22, 31, 40, 61, 18, 66, 47, 46, 83, 23, 7, 64, 21, 78, 42, 20, 43};
 
 
             List<Line> lines = new ArrayList<Line>();

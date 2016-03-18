@@ -301,6 +301,51 @@ public class SoilSmartService implements ISoilSmartService, IAuthenticateUser {
     }
 
     @Override
-    public boolean isLeakageDetected(final User user) {return true;}
+    public boolean isLeakageDetected(final User user) {
+        final String API_URL = "http://alphasoilsmart.azurewebsites.net/api/leakage?username=" + user.getEmail();
+        HttpURLConnection urlConnection = null;
+        final StringBuilder result = new StringBuilder();
+        final StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        try {
+            URL url = new URL(API_URL);
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setDoOutput(false);
+            urlConnection.setDoInput(true);
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setRequestProperty("User-Agent", "Fiddler");
+            urlConnection.setRequestProperty("Accept", "application/json");
+            urlConnection.setRequestProperty("Authorization", "Bearer " + userLocalStore.getToken());
+
+            int status = urlConnection.getResponseCode();
+            try {
+                Log.w("myAPP", String.valueOf(API_URL));
+                if (status != HttpURLConnection.HTTP_OK) {
+
+                    urlConnection.disconnect();
+                    return false;
+                }
+                final InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    result.append(line);
+                }
+                return Boolean.parseBoolean(result.toString());
+            }catch(IOException ex){
+                throw ex;
+            }
+        }catch( Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            if (urlConnection !=  null)
+                urlConnection.disconnect();
+        }
+        return false;
+    }
 
 }
