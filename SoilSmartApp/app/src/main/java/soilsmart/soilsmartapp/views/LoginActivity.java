@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import soilsmart.soilsmartapp.R;
+import soilsmart.soilsmartapp.SoilSmartNode;
 import soilsmart.soilsmartapp.SoilSmartService;
 import soilsmart.soilsmartapp.User;
 import soilsmart.soilsmartapp.UserLocalStore;
@@ -376,8 +377,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected void onPostExecute(final User user) {
             mAuthTask = null;
             showProgress(false);
+            List<SoilSmartNode> tempNodes;
 
             if (user != null) {
+                SoilSmartService.getInstance().setUserLocalStore(userLocalStore);
+                tempNodes = SoilSmartService.getInstance().getNodes(user);
+                user.setNodes(tempNodes);
                 userLocalStore.storeUserData(user);
                 userLocalStore.setUserLoggedIn(true);
                 launchActivity(NodeLocationsActivity.class);

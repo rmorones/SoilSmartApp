@@ -47,6 +47,7 @@ public class BaseMenuActivity extends AppCompatActivity {
 
             case R.id.leakage_activity:
                 //action
+                launchActivity(SolenoidControlActivity.class);
                 return true;
 
             case R.id.settings_activity:

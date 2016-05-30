@@ -41,4 +41,6 @@ public class User implements Serializable {
     public void setPasswordHash(String passHash) {
         passwordHash = passHash;
     }
+
+    public void setNodes(List<SoilSmartNode> serverNodes) {this.nodes = serverNodes;}
 }
