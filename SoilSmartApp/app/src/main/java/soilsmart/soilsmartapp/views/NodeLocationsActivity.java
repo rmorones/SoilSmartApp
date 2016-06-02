@@ -2,13 +2,20 @@ package soilsmart.soilsmartapp.views;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Parcelable;
+import android.os.StrictMode;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,13 +39,17 @@ import java.util.Random;
 import soilsmart.soilsmartapp.LeakageDetectionService;
 import soilsmart.soilsmartapp.R;
 import soilsmart.soilsmartapp.SoilSmartNode;
+import soilsmart.soilsmartapp.SoilSmartService;
+import soilsmart.soilsmartapp.User;
 import soilsmart.soilsmartapp.UserLocalStore;
 
 public class NodeLocationsActivity extends BaseMenuActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private UserLocalStore userLocalStore;
-    public Map<String,SoilSmartNode> nodes;
+    public Map<String, SoilSmartNode> nodes;
+    public List<SoilSmartNode> tempNodes;
+
     private int notificationFrequency = 5; // minutes
 
     @Override
@@ -46,31 +57,63 @@ public class NodeLocationsActivity extends BaseMenuActivity implements OnMapRead
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_node_locations);
 
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        final StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         userLocalStore = new UserLocalStore(this);
         Intent leakageDetection = new Intent(this, LeakageDetectionService.class);
-        PendingIntent pendingIntent = PendingIntent.getService(this,0,leakageDetection,0);
+        PendingIntent pendingIntent = PendingIntent.getService(this, 0, leakageDetection, 0);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.SECOND,notificationFrequency * 60);
+        calendar.add(Calendar.SECOND, notificationFrequency * 60);
         long frequency = notificationFrequency * 60 * 1000; // miliseconds
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),frequency,pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), frequency, pendingIntent);
+
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        List<SoilSmartNode> tempNodes;
+        //List<SoilSmartNode> tempNodes;
         mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 
         final LatLngBounds.Builder bounds = new LatLngBounds.Builder();
         String id;
-        tempNodes = GetRandomNodes();
+        SoilSmartService.getInstance().setUserLocalStore(userLocalStore);
+        final User user = userLocalStore.getLoggedInUser();
         nodes = new HashMap<>();
+
+        //check for a network connection: use chached nodes or fetch latest nodes.
+        if (!isNetworkAvailable()) {
+            tempNodes = user.getNodes();
+            AlertDialog.Builder dlgAlert = new AlertDialog.Builder(this);
+            dlgAlert.setMessage("Continue with cached data or close?");
+            dlgAlert.setTitle("No Network Connection");
+            dlgAlert.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    // continue with cache
+                    //tempNodes = user.getNodes();
+                }
+            });
+            dlgAlert.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    // continue with delete
+                    System.exit(0);
+                    finish();
+                }
+            });
+            dlgAlert.setCancelable(false);
+            dlgAlert.create().show();
+
+        } else {
+            //commented line from above
+            tempNodes = SoilSmartService.getInstance().getNodes(userLocalStore.getLoggedInUser());
+        }
 
         for (SoilSmartNode node : tempNodes) {
             final LatLng coords = new LatLng(node.getLat(), node.getLon());
@@ -116,9 +159,9 @@ public class NodeLocationsActivity extends BaseMenuActivity implements OnMapRead
                 tvLat.setText(String.format("%.6f", node.getLat()));
                 tvLon.setText(String.format("%.6f", node.getLon()));
 
-                tvLvl1.setText(String.format("%.2f", node.getValuesLvl1Avg() ) + "%");
-                tvLvl2.setText(String.format("%.2f", node.getValuesLvl2Avg() ) + "%");
-                tvLvl3.setText(String.format("%.2f", node.getValuesLvl3Avg() ) + "%");
+                tvLvl1.setText(String.format("%.2f", node.getValuesLvl1Avg()) + "%");
+                tvLvl2.setText(String.format("%.2f", node.getValuesLvl2Avg()) + "%");
+                tvLvl3.setText(String.format("%.2f", node.getValuesLvl3Avg()) + "%");
                 return v;
             }
 
@@ -148,7 +191,7 @@ public class NodeLocationsActivity extends BaseMenuActivity implements OnMapRead
                 67, 58, 54, 10, 75, 79, 17, 80, 57, 74, 100, 93, 72, 9, 11, 55, 34, 44, 96, 51, 98,
                 60, 48, 38, 19, 81, 1, 88, 35, 33, 26, 85, 30, 71, 52, 32, 59, 63, 65, 5, 16, 27,
                 39, 22, 31, 40, 61, 18, 66, 47, 46, 83, 23, 7, 64, 21, 78, 42, 20, 43};
-        double [] week = {64, 94, 1, 13, 76, 91, 51, 45, 25, 79, 9, 23, 80, 43, 97, 40, 84, 58, 46, 32, 75};
+        double[] week = {64, 94, 1, 13, 76, 91, 51, 45, 25, 79, 9, 23, 80, 43, 97, 40, 84, 58, 46, 32, 75};
 
         List<SoilSmartNode> nodes = new ArrayList<>();
         int i;
@@ -171,14 +214,23 @@ public class NodeLocationsActivity extends BaseMenuActivity implements OnMapRead
                 nodes.add(node);
             }
         }
-            return nodes;
+        return nodes;
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
         if (!userLocalStore.getUserLoggedIn()) {
             launchActivity(LoginActivity.class);
         }
     }
+
+    // Check if we have an active network connection
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null;
+    }
+
 }

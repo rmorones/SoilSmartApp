@@ -2,6 +2,7 @@ package soilsmart.soilsmartapp.views;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
@@ -55,8 +56,7 @@ public class SettingsActivity extends BaseMenuActivity {
     }
 
     private void LogOut() {
-        userLocalStore.clearUserData();
-        userLocalStore.setUserLoggedIn(false);
+        final Intent intent = new Intent(this, LoginActivity.class);
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final TextView confirmLogout = new TextView(this);
         confirmLogout.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
@@ -72,8 +72,10 @@ public class SettingsActivity extends BaseMenuActivity {
         builder.setPositiveButton("Log Out", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                userLocalStore.clearUserData();
+                userLocalStore.setUserLoggedIn(false);
+                startActivity(intent);
                 finish();
-                System.exit(0);
             }
         });
         builder.show();
@@ -118,7 +120,7 @@ public class SettingsActivity extends BaseMenuActivity {
                         // SoilSmartService method for new password
                         if (newPass.matches(getString(R.string.password_regex))) {
                             user.setPasswordHash(newPass);
-                            setPassResult.setText("Password Incorrect.");
+                            setPassResult.setText("Password Changed Successfully.");
                             builderResult.setView(setPassResult);
                         } else {
                             setPassResult.setText(getString(R.string.error_invalid_password));
