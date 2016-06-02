@@ -46,9 +46,11 @@ public class AllNodesActivity extends BaseMenuActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.all_nodes);
 
+        userLocalStore = new UserLocalStore(this);
+
         if (savedInstanceState == null) {
             //populate nodes list with "random" data
-            tempNodes = NodeLocationsActivity.GetRandomNodes();
+            tempNodes = userLocalStore.getLoggedInUser().getNodes();
             PlaceholderFragment frag = new PlaceholderFragment();
             frag.setNodes(tempNodes);
             getSupportFragmentManager().beginTransaction().add(R.id.container, frag).commit();
@@ -61,7 +63,7 @@ public class AllNodesActivity extends BaseMenuActivity {
             bar.show();
         }
 
-        userLocalStore = new UserLocalStore(this);
+
         Snackbar.make(findViewById(R.id.container), R.string.snackbarMsg,
                 Snackbar.LENGTH_LONG)
                 .show();
@@ -208,7 +210,7 @@ public class AllNodesActivity extends BaseMenuActivity {
             chartTop.setViewportCalculationEnabled(false);
 
             // And set initial max viewport and current viewport- remember to set viewports after data.
-            Viewport v = new Viewport(0, 100, 6, 0);
+            Viewport v = new Viewport(0, 4, 20, 0);
             chartTop.setMaximumViewport(v);
             chartTop.setCurrentViewport(v);
 
@@ -226,8 +228,15 @@ public class AllNodesActivity extends BaseMenuActivity {
             List<Line> lines = new ArrayList<>();
 
             List<PointValue> values = new ArrayList<>();
-            for (int j = 0; j < points1.length; ++j) {
-                values.add(new PointValue(j, (float) points1[j]));
+            if(points1.length > 20){
+                for (int j = (points1.length-20); j < points1.length; ++j) {
+                    values.add(new PointValue(j, (float) points1[j]));
+                }
+            }
+            else {
+                for (int j = 0; j < points1.length; ++j) {
+                    values.add(new PointValue(j, (float) points1[j]));
+                }
             }
 
             Line line = new Line(values);
@@ -245,8 +254,15 @@ public class AllNodesActivity extends BaseMenuActivity {
             lines.add(0,line);
 
             List<PointValue> values2 = new ArrayList<>();
-            for (int j = 0; j < points2.length; ++j) {
-                values2.add(new PointValue(j, (float) points2[j]));
+            if(points2.length > 20){
+                for (int j = (points2.length-20); j < points2.length; ++j) {
+                    values2.add(new PointValue(j, (float) points2[j]));
+                }
+            }
+            else {
+                for (int j = 0; j < points2.length; ++j) {
+                    values2.add(new PointValue(j, (float) points2[j]));
+                }
             }
             Line line2 = new Line(values2);
             line2.setColor(ChartUtils.COLORS[1]);
@@ -263,8 +279,16 @@ public class AllNodesActivity extends BaseMenuActivity {
             lines.add(1,line2);
 
             List<PointValue> values3 = new ArrayList<PointValue>();
-            for (int j = 0; j < points3.length; ++j) {
-                values3.add(new PointValue(j, (float) points3[j]));
+
+            if(points3.length > 20){
+                for (int j = (points3.length-20); j < points3.length; ++j) {
+                    values3.add(new PointValue(j, (float) points3[j]));
+                }
+            }
+            else {
+                for (int j = 0; j < points3.length; ++j) {
+                    values3.add(new PointValue(j, (float) points3[j]));
+                }
             }
             Line line3 = new Line(values3);
             line3.setColor(ChartUtils.COLORS[2]);
@@ -286,7 +310,7 @@ public class AllNodesActivity extends BaseMenuActivity {
                 Axis axisX = new Axis().setHasLines(true);
                 Axis axisY = new Axis().setHasLines(true);
                 if (hasAxesNames) {
-                    axisX.setName("Previous Days (Days Ago)");
+                    axisX.setName("Previous Days");
                     axisY.setName("Moisture");
                 }
                 lineData.setAxisXBottom(axisX);

@@ -59,7 +59,7 @@ public class SoilSmartService implements ISoilSmartService, IAuthenticateUser {
     public boolean authenticate(User user) {
         String credentials;
         credentials = "grant_type=password&username=" +user.getEmail() + "&password=" + user.getPasswordHash();
-        new getLogin().execute("http://soilsmartbasic.azurewebsites.net/token", credentials, "POST");
+        new getLogin().execute("http://alphasoilsmart.azurewebsites.net/token", credentials, "POST");
         //Log.w("myApp", async_result);
         try {
             JSONObject tokn = new JSONObject(async_result);
@@ -75,7 +75,7 @@ public class SoilSmartService implements ISoilSmartService, IAuthenticateUser {
 
     @Override
     public List<SoilSmartNode> getNodes(final User user) {
-        final String API_URL = "http://soilsmartbasic.azurewebsites.net/api/Nodes?username=" + user.getEmail();
+        final String API_URL = "http://alphasoilsmart.azurewebsites.net/api/Nodes?username=" + user.getEmail();
         HttpURLConnection urlConnection = null;
         final StringBuilder result = new StringBuilder();
         final StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -130,13 +130,13 @@ public class SoilSmartService implements ISoilSmartService, IAuthenticateUser {
 
                     }
                     nodeDTO.setLevel_1(one);
-                    JSONArray values2 =  node.getJSONArray("Level_1");
+                    JSONArray values2 =  node.getJSONArray("Level_2");
                     double[] two = new double[values2.length()];
                     for (int j = 0; j < values2.length(); ++j) {
                         two[j] = values2.getDouble(j);
                     }
                     nodeDTO.setLevel_2(two);
-                    JSONArray values3 =  node.getJSONArray("Level_1");
+                    JSONArray values3 =  node.getJSONArray("Level_3");
                     double[] three = new double[values3.length()];
                     for (int j = 0; j < values3.length(); ++j) {
                         three[j] = values3.getDouble(j);
@@ -205,7 +205,7 @@ public class SoilSmartService implements ISoilSmartService, IAuthenticateUser {
         }
         //Log.w("myApp", register_user);
 
-        new getLogin().execute("http://soilsmartbasic.azurewebsites.net/api/Account/Register", register_user, "POST");
+        new getLogin().execute("http://alphasoilsmart.azurewebsites.net/api/Account/Register", register_user, "POST");
         if (async_result == "success") {
             async_result = null;
             return true;
@@ -218,7 +218,7 @@ public class SoilSmartService implements ISoilSmartService, IAuthenticateUser {
 
     @Override
     public JSONArray getIrrigation(final User user) {
-        final String API_URL = "http://soilsmartbasic.azurewebsites.net/api/IrrigationControls";
+        final String API_URL = "http://alphasoilsmart.azurewebsites.net/api/IrrigationControls";
         HttpURLConnection urlConnection = null;
         final StringBuilder result = new StringBuilder();
         final StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -276,7 +276,7 @@ public class SoilSmartService implements ISoilSmartService, IAuthenticateUser {
 
     @Override
     public void postForceOff(User user, String str){
-        final String API_URL = "http://soilsmartbasic.azurewebsites.net/api/IrrigationControls/forceoff?nodeId=" + str;
+        final String API_URL = "http://alphasoilsmart.azurewebsites.net/api/IrrigationControls/forceoff?nodeId=" + str;
         HttpURLConnection urlConnection = null;
         //final StringBuilder result = new StringBuilder();
         final StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -341,7 +341,7 @@ public class SoilSmartService implements ISoilSmartService, IAuthenticateUser {
 
                 try {
                     //Log.w("myAPP", String.valueOf(urlConnection.getResponseCode()));
-                    if (urlConnection.getResponseCode() == 200 && args[0] == "http://soilsmartbasic.azurewebsites.net/api/Account/Register") {
+                    if (urlConnection.getResponseCode() == 200 && args[0] == "http://alphasoilsmart.azurewebsites.net/api/Account/Register") {
                         return "success";
                     }
                     InputStream in = new BufferedInputStream(urlConnection.getInputStream());
@@ -377,7 +377,7 @@ public class SoilSmartService implements ISoilSmartService, IAuthenticateUser {
 
     @Override
     public boolean isLeakageDetected(final User user) {
-        final String API_URL = "http://soilsmartbasic.azurewebsites.net/api/leakage?username=" + user.getEmail();
+        final String API_URL = "http://alphasoilsmart.azurewebsites.net/api/leakage?username=" + user.getEmail();
         HttpURLConnection urlConnection = null;
         final StringBuilder result = new StringBuilder();
         final StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();

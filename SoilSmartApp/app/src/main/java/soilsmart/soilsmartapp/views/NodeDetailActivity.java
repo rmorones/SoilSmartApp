@@ -234,7 +234,7 @@ public class NodeDetailActivity extends BaseMenuActivity {
             // Reset viewport height range to (0,100)
             final Viewport v = new Viewport(chart.getMaximumViewport());
             v.bottom = 0;
-            v.top = 100;
+            v.top = 4;
             v.left = 0;
             if(option == null){
                 v.right = node.getValuesLvl1().length;
@@ -262,10 +262,16 @@ public class NodeDetailActivity extends BaseMenuActivity {
             List<Line> lines = new ArrayList<Line>();
 
                 List<PointValue> values = new ArrayList<PointValue>();
+            if(points1.length > 20){
+                for (int j = (points1.length-20); j < points1.length; ++j) {
+                    values.add(new PointValue(j, (float) points1[j]));
+                }
+            }
+            else {
                 for (int j = 0; j < points1.length; ++j) {
                     values.add(new PointValue(j, (float) points1[j]));
                 }
-
+            }
                 Line line = new Line(values);
                 line.setColor(ChartUtils.COLORS[0]);
                 line.setShape(shape);
@@ -281,8 +287,15 @@ public class NodeDetailActivity extends BaseMenuActivity {
                 lines.add(0,line);
 
             List<PointValue> values2 = new ArrayList<PointValue>();
-            for (int j = 0; j < points2.length; ++j) {
-                values2.add(new PointValue(j, (float) points2[j]));
+            if(points2.length > 20){
+                for (int j = (points2.length-20); j < points2.length; ++j) {
+                    values2.add(new PointValue(j, (float) points2[j]));
+                }
+            }
+            else {
+                for (int j = 0; j < points2.length; ++j) {
+                    values2.add(new PointValue(j, (float) points2[j]));
+                }
             }
                 Line line2 = new Line(values2);
                 line2.setColor(ChartUtils.COLORS[1]);
@@ -299,8 +312,15 @@ public class NodeDetailActivity extends BaseMenuActivity {
             lines.add(1,line2);
 
             List<PointValue> values3 = new ArrayList<PointValue>();
-            for (int j = 0; j < points3.length; ++j) {
-                values3.add(new PointValue(j, (float) points3[j]));
+            if(points3.length > 20){
+                for (int j = (points3.length-20); j < points3.length; ++j) {
+                    values3.add(new PointValue(j, (float) points3[j]));
+                }
+            }
+            else {
+                for (int j = 0; j < points3.length; ++j) {
+                    values3.add(new PointValue(j, (float) points3[j]));
+                }
             }
                 Line line3 = new Line(values3);
                 line3.setColor(ChartUtils.COLORS[2]);
@@ -323,7 +343,7 @@ public class NodeDetailActivity extends BaseMenuActivity {
                 Axis axisY = new Axis().setHasLines(true);
                 if (hasAxesNames) {
                     axisX.setName("Time");
-                    axisY.setName("Moisture Level (%)");
+                    axisY.setName("Moisture Level");
                 }
                 data.setAxisXBottom(axisX);
                 data.setAxisYLeft(axisY);
@@ -339,7 +359,7 @@ public class NodeDetailActivity extends BaseMenuActivity {
 
         private void generateDataWeek(){
             //values for the lines we are going to plot
-            double[] points1 =  {64, 94, 1, 13, 76, 91, 51, 45, 25, 79, 9, 23, 80, 43, 97, 40, 84, 58, 46, 32, 75};
+            double[] points1 =  {1,1,2,2,1,1,2,2,3,3,3,3,1,1,2,2,3,3,1,2,3,3,2,1,3,2,1,2,2,2,2,3,1,1,1,1,3,2,2,0,0};
 
 
             List<Line> lines = new ArrayList<Line>();
@@ -385,12 +405,10 @@ public class NodeDetailActivity extends BaseMenuActivity {
 
         private void generateDataMonth(){
             //values for the lines we are going to plot
-            double[] points1 = {39, 92, 18, 80, 14, 68, 60, 17, 21, 26, 23, 66, 51, 82, 81, 75, 11, 13,
-                    70, 87, 88, 56, 25, 78, 20, 61, 76, 93, 86, 62, 12, 1, 95, 96, 30, 83, 6, 31, 98,
-                    8, 37, 15, 65, 46, 32, 35, 89, 3, 41, 73, 48, 99, 52, 19, 100, 29, 43, 27, 54, 36,
-                    67, 58, 54, 10, 75, 79, 17, 80, 57, 74, 100, 93, 72, 9, 11, 55, 34, 44, 96, 51, 98,
-                    60, 48, 38, 19, 81, 1, 88, 35, 33, 26, 85, 30, 71, 52, 32, 59, 63, 65, 5, 16, 27,
-                    39, 22, 31, 40, 61, 18, 66, 47, 46, 83, 23, 7, 64, 21, 78, 42, 20, 43};
+            double[] points1 = {1,1,2,2,1,1,2,2,3,3,3,3,1,1,2,2,3,3,1,2,3,3,2,1,3,2,1,2,2,2,2,3,1,1,1,1,3,2,2,0,0,
+                    1,1,2,2,1,1,2,2,3,3,3,3,1,1,2,2,3,3,1,2,3,3,2,1,3,2,1,2,2,2,2,3,1,1,1,1,3,2,2,0,0
+                    ,1,3,2,1,2,2,2,2,3,1,1,1,1,3,2,2,0,0,
+                    1,1,2,2,1,1,2,2,3,3,3,3,1,1,2,2,3,3,1,2,3,3,2,1,3,2,1};
 
 
             List<Line> lines = new ArrayList<Line>();
