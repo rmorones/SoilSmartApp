@@ -114,5 +114,12 @@
         viverra rhoncus sit amet nec magna. Donec lacinia ligula at libero volutpat volutpat nec nec
         tortor.
     </string>
+    <string name="force_off">Force Off</string>
+    <string name="last_ncompleted">      Last\nCompleted</string>
+    <string name="status">Status</string>
+    <string name="cycle_time_n_minutes">Cycle Time\n (minutes)</string>
+    <string name="zone">Zone</string>
+    <string name="irrigate">IRRIGATE</string>
+    <string name="_1">1</string>
 
 </resources>

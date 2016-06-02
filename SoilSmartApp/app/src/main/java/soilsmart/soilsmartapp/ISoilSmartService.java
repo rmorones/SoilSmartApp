@@ -1,5 +1,7 @@
 package soilsmart.soilsmartapp;
 
+import org.json.JSONArray;
+
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +19,30 @@ public interface ISoilSmartService {
      * @return
      */
     List<SoilSmartNode> getNodes(User user);
+
+    /**
+     * Gets the current status of irrigation
+     *
+     * @param user
+     * @return
+     */
+    void postIrrigate(User user);
+
+    /**
+     * Gets the current status of irrigation
+     *
+     * @param user
+     * @return
+     */
+    void postForceOff(User user, String str);
+
+    /**
+     * Gets the current status of irrigation
+     *
+     * @param user
+     * @return
+     */
+    JSONArray getIrrigation(User user);
 
     /**
      * Get last week worth of data

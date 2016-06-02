@@ -3,33 +3,19 @@ package soilsmart.soilsmartapp;
 import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Node;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -73,7 +59,7 @@ public class SoilSmartService implements ISoilSmartService, IAuthenticateUser {
     public boolean authenticate(User user) {
         String credentials;
         credentials = "grant_type=password&username=" +user.getEmail() + "&password=" + user.getPasswordHash();
-        new getLogin().execute("http://alphasoilsmart.azurewebsites.net/token", credentials, "POST");
+        new getLogin().execute("http://soilsmartbasic.azurewebsites.net/token", credentials, "POST");
         //Log.w("myApp", async_result);
         try {
             JSONObject tokn = new JSONObject(async_result);
@@ -84,17 +70,12 @@ public class SoilSmartService implements ISoilSmartService, IAuthenticateUser {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        if (token != null) {
-            return true;
-        }
-        else{
-            return false;
-        }
+        return token != null;
     }
 
     @Override
     public List<SoilSmartNode> getNodes(final User user) {
-        final String API_URL = "http://alphasoilsmart.azurewebsites.net/api/Nodes?username=" + user.getEmail();
+        final String API_URL = "http://soilsmartbasic.azurewebsites.net/api/Nodes?username=" + user.getEmail();
         HttpURLConnection urlConnection = null;
         final StringBuilder result = new StringBuilder();
         final StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -224,7 +205,7 @@ public class SoilSmartService implements ISoilSmartService, IAuthenticateUser {
         }
         //Log.w("myApp", register_user);
 
-        new getLogin().execute("http://alphasoilsmart.azurewebsites.net/api/Account/Register", register_user, "POST");
+        new getLogin().execute("http://soilsmartbasic.azurewebsites.net/api/Account/Register", register_user, "POST");
         if (async_result == "success") {
             async_result = null;
             return true;
@@ -233,6 +214,100 @@ public class SoilSmartService implements ISoilSmartService, IAuthenticateUser {
             async_result = null;
             return false;
         }
+    }
+
+    @Override
+    public JSONArray getIrrigation(final User user) {
+        final String API_URL = "http://soilsmartbasic.azurewebsites.net/api/IrrigationControls";
+        HttpURLConnection urlConnection = null;
+        final StringBuilder result = new StringBuilder();
+        final StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        try {
+            URL url = new URL(API_URL);
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setDoOutput(false);
+            urlConnection.setDoInput(true);
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setRequestProperty("User-Agent", "Fiddler");
+            urlConnection.setRequestProperty("Accept", "application/json");
+            urlConnection.setRequestProperty("Authorization", "Bearer " + userLocalStore.getToken());
+
+            int status = urlConnection.getResponseCode();
+            try {
+                Log.w("myAPP", String.valueOf(API_URL));
+                if (status != HttpURLConnection.HTTP_OK) {
+
+                    urlConnection.disconnect();
+                    return null;
+                }
+                final InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    result.append(line);
+                }
+                JSONArray jsonResponse = new JSONArray(result.toString());
+                //for (int i =0; i < jsonResponse.length(); ++i) {
+                //}
+                //do my own return here
+                return jsonResponse;
+            }catch(IOException ex){
+                throw ex;
+            }
+        }catch( Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            if (urlConnection !=  null)
+                urlConnection.disconnect();
+        }
+
+        return null;
+    }
+
+    @Override
+    public void postIrrigate(User user){
+
+    }
+
+    @Override
+    public void postForceOff(User user, String str){
+        final String API_URL = "http://soilsmartbasic.azurewebsites.net/api/IrrigationControls/forceoff?nodeId=" + str;
+        HttpURLConnection urlConnection = null;
+        //final StringBuilder result = new StringBuilder();
+        final StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        try {
+            URL url = new URL(API_URL);
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setDoOutput(false);
+            urlConnection.setDoInput(true);
+            urlConnection.setRequestMethod("PUT");
+            urlConnection.setRequestProperty("User-Agent", "Fiddler");
+            urlConnection.setRequestProperty("Accept", "application/json");
+            urlConnection.setRequestProperty("Authorization", "Bearer " + userLocalStore.getToken());
+
+            int status = urlConnection.getResponseCode();
+            Log.w("myAPP", String.valueOf(API_URL));
+            if (status != HttpURLConnection.HTTP_OK) {
+
+                urlConnection.disconnect();
+            }
+
+        }catch( Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            if (urlConnection !=  null)
+                urlConnection.disconnect();
+        }
+
     }
 
     public class getLogin extends AsyncTask<String, String, String> {
@@ -266,7 +341,7 @@ public class SoilSmartService implements ISoilSmartService, IAuthenticateUser {
 
                 try {
                     //Log.w("myAPP", String.valueOf(urlConnection.getResponseCode()));
-                    if (urlConnection.getResponseCode() == 200 && args[0] == "http://alphasoilsmart.azurewebsites.net/api/Account/Register") {
+                    if (urlConnection.getResponseCode() == 200 && args[0] == "http://soilsmartbasic.azurewebsites.net/api/Account/Register") {
                         return "success";
                     }
                     InputStream in = new BufferedInputStream(urlConnection.getInputStream());
@@ -302,7 +377,7 @@ public class SoilSmartService implements ISoilSmartService, IAuthenticateUser {
 
     @Override
     public boolean isLeakageDetected(final User user) {
-        final String API_URL = "http://alphasoilsmart.azurewebsites.net/api/leakage?username=" + user.getEmail();
+        final String API_URL = "http://soilsmartbasic.azurewebsites.net/api/leakage?username=" + user.getEmail();
         HttpURLConnection urlConnection = null;
         final StringBuilder result = new StringBuilder();
         final StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
