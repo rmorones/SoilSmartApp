@@ -22,7 +22,7 @@ import java.util.List;
 
 /**
  * SoilSmartApp
- * Created by Ricardo Morones on 2/28/16.
+ * Created by Ricardo Morones & Jesus Vega on 2/28/16.
  */
 public class SoilSmartService implements ISoilSmartService, IAuthenticateUser {
 
